@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_home">
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.csuarez.ulpinmobiliaria.ui.menu.home.HomeFragment"
+        android:label="Inicio"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/nav_perfil"
+        android:name="com.csuarez.ulpinmobiliaria.ui.menu.perfil.PerfilFragment"
+        android:label="Perfil"
+        tools:layout="@layout/fragment_perfil" >
+        <!--
+        <action
+            android:id="@+id/action_nav_perfil_to_CambiarPasswordFragment"
+            app:destination="@id/CambiarPasswordFragment" />
+            -->
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_slideshow"
+        android:name="com.csuarez.ulpinmobiliaria.ui.menu.inmueble.InmueblesFragment"
+        android:label="Inmuebles"
+        tools:layout="@layout/fragment_inmuebles" >
+       <!--
+        <action
+            android:id="@+id/action_nav_inmuebles_to_detalleInmuebleFragment"
+            app:destination="@id/detalleInmuebleFragment" />
+        <action
+            android:id="@+id/action_nav_inmuebles_to_agregarInmuebleFragment"
+            app:destination="@id/agregarInmuebleFragment" />
+            -->
+    </fragment>
+
+<!--
+
+    <fragment
+        android:id="@+id/inquilinoContratoFragment"
+        android:name="com.example.trabajopracticoinmobiliaria.menu.ui.inquilino_contrato.InquilinoContratoFragment"
+        android:label="@string/inmuebles"
+        tools:layout="@layout/fragment_inquilino_contrato" >
+        <action
+            android:id="@+id/action_inquilinoContratoFragment_to_detalleContratoFragment"
+            app:destination="@id/detalleContratoFragment" />
+        <action
+            android:id="@+id/action_inquilinoContratoFragment_to_detalleInquilinoFragment"
+            app:destination="@id/detalleInquilinoFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detalleInmuebleFragment"
+        android:name="com.example.trabajopracticoinmobiliaria.menu.ui.slideshow.DetalleInmuebleFragment"
+        android:label="@string/informaci_n_del_inmueble"
+        tools:layout="@layout/fragment_detalle_inmueble" />
+    <fragment
+        android:id="@+id/cambiarPasswordFragment"
+        android:name="com.example.trabajopracticoinmobiliaria.menu.ui.gallery.CambiarPasswordFragment"
+        android:label="@string/cambia_tu_contrase_a"
+        tools:layout="@layout/fragment_cambiar_password" />
+    <fragment
+        android:id="@+id/agregarInmuebleFragment"
+        android:name="com.example.trabajopracticoinmobiliaria.menu.ui.slideshow.AgregarInmuebleFragment"
+        android:label="@string/a_adir_un_nuevo_inmueble"
+        tools:layout="@layout/fragment_agregar_inmueble" />
+    <fragment
+        android:id="@+id/detalleContratoFragment"
+        android:name="com.example.trabajopracticoinmobiliaria.menu.ui.inquilino_contrato.DetalleContratoFragment"
+        android:label="@string/informaci_n_del_contrato"
+        tools:layout="@layout/fragment_detalle_contrato" >
+        <action
+            android:id="@+id/action_detalleContratoFragment_to_detallePagosFragment"
+            app:destination="@id/detallePagosFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detalleInquilinoFragment"
+        android:name="com.example.trabajopracticoinmobiliaria.menu.ui.inquilino_contrato.DetalleInquilinoFragment"
+        android:label="@string/informaci_n_del_inquilino"
+        tools:layout="@layout/fragment_detalle_inquilino" />
+    <fragment
+        android:id="@+id/detallePagosFragment"
+        android:name="com.example.trabajopracticoinmobiliaria.menu.ui.inquilino_contrato.DetallePagosFragment"
+        android:label="@string/informaci_n_de_los_pagos"
+        tools:layout="@layout/fragment_detalle_pagos" />
+
+-->
+
+    <fragment
+        android:id="@+id/logoutFragment"
+        android:name="com.csuarez.ulpinmobiliaria.ui.menu.logout.LogoutFragment"
+        android:label="Salir"
+        tools:layout="@layout/fragment_logout" />
+</navigation>
