@@ -47,11 +47,11 @@ public class MainActivityViewModel extends AndroidViewModel {
         String pass = clave.toString();
 
         if (email.isEmpty()) {
-            mError.setValue("Ingrese un mail");
+            mError.setValue("Ingrese un correo electrónico");
             return;
         }
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            mError.setValue("Ingrese un mail válido");
+            mError.setValue("Ingrese un correo electrónico válido");
             return;
         }
         if (pass.isEmpty()) {

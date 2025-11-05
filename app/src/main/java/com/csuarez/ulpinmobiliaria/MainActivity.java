@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -24,6 +25,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.csuarez.ulpinmobiliaria.databinding.ActivityMainBinding;
 import com.csuarez.ulpinmobiliaria.ui.menu.MenuActivity;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,8 +55,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         }
 
 
-
-
         //observer agitar
         mainVm.getMAgitar().observe(this, new Observer<Boolean>() {
             @Override
@@ -77,9 +77,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         mainVm.getMError().observe(this, new Observer<String>() {
             @Override
             public void onChanged (String error){
-                Toast.makeText(getApplication(),
-                        error,
-                        Toast.LENGTH_SHORT).show();
+                Snackbar.make(binding.getRoot(), error, Snackbar.LENGTH_LONG)
+                        .setBackgroundTint(Color.WHITE)
+                        .setTextColor(Color.RED)
+                        .show();
             }
         });
 
@@ -129,7 +130,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             startActivity(intent);
         }
         else {
-            Toast.makeText(this, "Permiso de llamada no concedido", Toast.LENGTH_SHORT).show();
+            Snackbar.make(binding.getRoot(), "Permiso de llamada no concedido", Snackbar.LENGTH_LONG)
+                    .setBackgroundTint(Color.WHITE)
+                    .setTextColor(Color.RED)
+                    .show();
         }
         mainVm.resetAccel();
     }
@@ -177,7 +181,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     }
 
                     if (todosOtorgados) {
-                        Toast.makeText(this, "Permisos concedidos correctamente", Toast.LENGTH_SHORT).show();
+                        Snackbar.make(binding.getRoot(), "Permisos concedidos correctamente", Snackbar.LENGTH_SHORT)
+                                .setBackgroundTint(Color.WHITE)
+                                .setTextColor(Color.BLUE)
+                                .show();
                     } else if (algunoNoPreguntar) {
                         Toast.makeText(this,
                                 "Algunos permisos fueron denegados permanentemente. Habilítelos en Configuración.",
