@@ -17,40 +17,123 @@ import retrofit2.Response;
 public class PerfilViewModel extends AndroidViewModel {
     private MutableLiveData<Propietario> mPropietario = new MutableLiveData<>();
     private MutableLiveData<String> mError = new MutableLiveData<>();
+    private MutableLiveData<Boolean> mEditMode = new MutableLiveData<>(false);
+    private MutableLiveData<String> mValError = new MutableLiveData<>();
 
 
+    private static final String REGEX_EMAIL = "^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$";
+    private static final String REGEX_DNI = "^\\d{7,8}$";
+    private static final String REGEX_TEL = "^\\d{6,15}$";
+    private static final String REGEX_TEXTO = "^[A-Za-zÁÉÍÓÚáéíóúÑñ ]{2,50}$";
 
     public PerfilViewModel(@NonNull Application application) {
         super(application);
     }
 
 
-    public LiveData<Propietario> getMPropietario(){
+    public LiveData<Propietario> getMPropietario() {
         return mPropietario;
     }
-    public LiveData<String> getMError(){
+
+    public LiveData<String> getMError() {
         return mError;
     }
 
+    public LiveData<Boolean> getMEditMode() {
+        return mEditMode;
+    }
 
+    public LiveData<String> getMValError() {
+        return mValError;
+    }
 
     //cargar datos del perfil
-    public void showPerfil() {
+    public void cargarPerfil() {
         String token = ApiClient.getToken(getApplication());
         Call<Propietario> call = ApiClient.getClient().getPropietario("Bearer " + token);
         call.enqueue(new Callback<Propietario>() {
             @Override
             public void onResponse(Call<Propietario> call, Response<Propietario> response) {
                 if (response.isSuccessful()) {
-                    mPropietario.postValue(response.body());
+                    mPropietario.setValue(response.body());
                 } else {
                     mError.setValue("Error al obtener perfil");
                 }
             }
+
             @Override
             public void onFailure(Call<Propietario> call, Throwable t) {
                 mError.setValue("Error de servidor");
             }
         });
+    }
+
+    public void onBotonPrincipalClick(Propietario propietario) {
+        Boolean modo = mEditMode.getValue();
+        if (modo != null && modo) {
+            if(validarCampos(propietario)) {
+                guardarCambios(propietario);
+            }
+        } else {
+            mEditMode.setValue(true);
+        }
+    }
+
+    public void guardarCambios(Propietario propietario) {
+        String token = ApiClient.getToken(getApplication());
+        Call<Propietario> call = ApiClient.getClient().actualizarPropietario("Bearer " + token, propietario);
+
+        call.enqueue(new Callback<Propietario>() {
+            @Override
+            public void onResponse(Call<Propietario> call, Response<Propietario> response) {
+                if (response.isSuccessful()) {
+                    mPropietario.setValue(response.body());
+                    mError.setValue("Perfil actualizado correctamente");
+                    mEditMode.setValue(false);
+                } else {
+                    mError.setValue("Error al actualizar el perfil");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Propietario> call, Throwable t) {
+                mError.setValue("Error de conexión al guardar");
+            }
+        });
+    }
+
+    private boolean validarCampos(Propietario p) {
+        if (p.getNombre().isEmpty() || p.getApellido().isEmpty() ||
+                p.getDni().isEmpty() || p.getTelefono().isEmpty() || p.getEmail().isEmpty()) {
+            mValError.setValue("No deje campos vacíos.");
+            return false;
+        }
+
+        if (!p.getNombre().matches(REGEX_TEXTO)) {
+            mValError.setValue("El nombre contiene caracteres inválidos.");
+            return false;
+        }
+
+        if (!p.getApellido().matches(REGEX_TEXTO)) {
+            mValError.setValue("El apellido contiene caracteres inválidos.");
+            return false;
+        }
+
+        if (!p.getDni().matches(REGEX_DNI)) {
+            mValError.setValue("El DNI debe tener 7 u 8 números.");
+            return false;
+        }
+
+        if (!p.getTelefono().matches(REGEX_TEL)) {
+            mValError.setValue("El teléfono no es válido.");
+            return false;
+        }
+
+        if (!p.getEmail().matches(REGEX_EMAIL)) {
+            mValError.setValue("El email no es válido.");
+            return false;
+        }
+
+        return true;
     }
 }

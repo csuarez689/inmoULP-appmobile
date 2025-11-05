@@ -13,11 +13,13 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 
 public class ApiClient {
 
@@ -68,10 +70,17 @@ public class ApiClient {
 
         @FormUrlEncoded
         @POST("api/Propietarios/login")
-        Call<String> login(@Field("Usuario") String user, @Field("Clave") String password);
+        Call<String> login(@Field("Usuario") String user, @Field("Clave") String pass);
 
         @GET("api/Propietarios")
         Call<Propietario> getPropietario(@Header("Authorization") String token);
+
+        @PUT("api/Propietarios/actualizar")
+        Call<Propietario> actualizarPropietario(@Header("Authorization") String token, @Body Propietario propietario);
+
+        @FormUrlEncoded
+        @PUT("api/Propietarios/changePassword")
+        Call<Void> cambiarPassword(@Header("Authorization") String token, @Field("currentPassword") String passActual, @Field("newPassword") String passNueva);
 
 
     }
