@@ -4,7 +4,6 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -78,9 +77,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             @Override
             public void onChanged (String error){
                 Snackbar.make(binding.getRoot(), error, Snackbar.LENGTH_LONG)
-                        .setBackgroundTint(Color.WHITE)
-                        .setTextColor(Color.RED)
-                        .show();
+                            .setBackgroundTint(0xFFE57373)
+                            .show();
             }
         });
 
@@ -131,9 +129,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         }
         else {
             Snackbar.make(binding.getRoot(), "Permiso de llamada no concedido", Snackbar.LENGTH_LONG)
-                    .setBackgroundTint(Color.WHITE)
-                    .setTextColor(Color.RED)
-                    .show();
+                            .setBackgroundTint(0xFFE57373)
+                            .show();
         }
         mainVm.resetAccel();
     }
@@ -181,10 +178,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     }
 
                     if (todosOtorgados) {
-                        Snackbar.make(binding.getRoot(), "Permisos concedidos correctamente", Snackbar.LENGTH_SHORT)
-                                .setBackgroundTint(Color.WHITE)
-                                .setTextColor(Color.BLUE)
-                                .show();
+                        Snackbar.make(binding.getRoot(), "Permisos concedidos correctamente", Snackbar.LENGTH_SHORT).show();
                     } else if (algunoNoPreguntar) {
                         Toast.makeText(this,
                                 "Algunos permisos fueron denegados permanentemente. Habilítelos en Configuración.",
