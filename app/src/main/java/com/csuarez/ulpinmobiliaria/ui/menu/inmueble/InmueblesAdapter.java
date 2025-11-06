@@ -13,22 +13,21 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.csuarez.ulpinmobiliaria.R;
 import com.csuarez.ulpinmobiliaria.models.Inmueble;
-import com.csuarez.ulpinmobiliaria.network.ApiClient;
 
-import java.text.NumberFormat;
 import java.util.List;
-import java.util.Locale;
 
 public class InmueblesAdapter extends RecyclerView.Adapter<InmueblesAdapter.InmuebleViewHolder> {
 
     private List<Inmueble> listaInmuebles;
     private LayoutInflater layoutInflater;
     private Context context;
+    private OnInmuebleClickListener listener;
 
-    public InmueblesAdapter(List<Inmueble> listaInmuebles, LayoutInflater layoutInflater, Context context) {
+    public InmueblesAdapter(List<Inmueble> listaInmuebles, LayoutInflater layoutInflater, Context context, OnInmuebleClickListener listener) {
         this.listaInmuebles = listaInmuebles;
         this.layoutInflater = layoutInflater;
         this.context = context;
+        this.listener = listener;
     }
 
     @NonNull
@@ -45,23 +44,27 @@ public class InmueblesAdapter extends RecyclerView.Adapter<InmueblesAdapter.Inmu
         holder.tvDireccion.setText(inmueble.getDireccion());
         holder.tvTipoUso.setText(inmueble.getTipo() + " - " + inmueble.getUso());
         holder.tvDetalles.setText(inmueble.getAmbientes() + " amb. - " + inmueble.getSuperficie() + " m²");
-
-        NumberFormat formatoPrecio = NumberFormat.getCurrencyInstance(new Locale("es", "AR"));
-        holder.tvPrecio.setText(formatoPrecio.format(inmueble.getValor()));
+        holder.tvPrecio.setText(inmueble.getPrecioFormateado());
 
         // Cargar imagen con Glide
-        if (inmueble.getImagen() != null && !inmueble.getImagen().isEmpty()) {
-            String imageUrl = inmueble.getImagen().replace("\\", "/");
-            String fullUrl = ApiClient.BASE_URL + imageUrl;
-
+        String imageUrl = inmueble.getImagenUrl();
+        if (imageUrl != null) {
             Glide.with(context)
-                    .load(fullUrl)
+                    .load(imageUrl)
                     .placeholder(R.drawable.ic_launcher_background)
                     .error(R.drawable.ic_launcher_background)
                     .into(holder.ivInmueble);
         } else {
             holder.ivInmueble.setImageResource(R.drawable.ic_launcher_background);
         }
+
+        // Click en el item completo
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onInmuebleClick(inmueble);
+            }
+        });
     }
 
     @Override
@@ -84,5 +87,9 @@ public class InmueblesAdapter extends RecyclerView.Adapter<InmueblesAdapter.Inmu
             tvDetalles = itemView.findViewById(R.id.tvDetalles);
             tvPrecio = itemView.findViewById(R.id.tvPrecio);
         }
+    }
+
+    public interface OnInmuebleClickListener {
+        void onInmuebleClick(Inmueble inmueble);
     }
 }

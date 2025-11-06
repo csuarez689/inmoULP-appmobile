@@ -77,15 +77,13 @@ public class PerfilFragment extends Fragment {
         binding.btnGuardar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Propietario propietario = new Propietario(
-                        perfilVm.getMPropietario().getValue().getIdPropietario(),
+                perfilVm.onBotonPrincipalClick(
                         binding.etNombre.getText().toString(),
                         binding.etApellido.getText().toString(),
                         binding.etDni.getText().toString(),
                         binding.etTelefono.getText().toString(),
                         binding.etEmail.getText().toString()
                 );
-                perfilVm.onBotonPrincipalClick(propietario);
             }
         });
 

@@ -68,15 +68,31 @@ public class PerfilViewModel extends AndroidViewModel {
         });
     }
 
-    public void onBotonPrincipalClick(Propietario propietario) {
+    public void onBotonPrincipalClick(String nombre, String apellido, String dni, String telefono, String email) {
         Boolean modo = mEditMode.getValue();
         if (modo != null && modo) {
-            if(validarCampos(propietario)) {
+            Propietario propietario = crearPropietarioDesdeFormulario(nombre, apellido, dni, telefono, email);
+            if (propietario != null && validarCampos(propietario)) {
                 guardarCambios(propietario);
             }
         } else {
             mEditMode.setValue(true);
         }
+    }
+
+    private Propietario crearPropietarioDesdeFormulario(String nombre, String apellido, String dni, String telefono, String email) {
+       
+        if (mPropietario.getValue() != null) {
+            return new Propietario(
+                    mPropietario.getValue().getIdPropietario(),
+                    nombre,
+                    apellido,
+                    dni,
+                    telefono,
+                    email
+            );
+        }
+        return null;
     }
 
     public void guardarCambios(Propietario propietario) {

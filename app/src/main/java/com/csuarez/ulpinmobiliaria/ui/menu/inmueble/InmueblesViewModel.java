@@ -49,7 +49,7 @@ public class InmueblesViewModel extends AndroidViewModel {
 
             @Override
             public void onFailure(@NonNull Call<List<Inmueble>> call, @NonNull Throwable t) {
-                mError.setValue("Error de conexión: " + t.getMessage());
+                mError.setValue("Error de servidor");
             }
         });
     }

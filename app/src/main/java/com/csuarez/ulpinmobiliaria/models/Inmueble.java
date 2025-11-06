@@ -1,6 +1,10 @@
 package com.csuarez.ulpinmobiliaria.models;
 
+import com.csuarez.ulpinmobiliaria.network.ApiClient;
+
 import java.io.Serializable;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 public class Inmueble implements Serializable {
     
@@ -69,4 +73,18 @@ public class Inmueble implements Serializable {
     public void setIdPropietario(int idPropietario) { this.idPropietario = idPropietario; }
     public void setDuenio(Propietario duenio) { this.duenio = duenio; }
     public void setTieneContratoVigente(boolean tieneContratoVigente) { this.tieneContratoVigente = tieneContratoVigente; }
+
+    // Métodos helper
+    public String getImagenUrl() {
+        if (imagen != null && !imagen.isEmpty()) {
+            String imageUrl = imagen.replace("\\", "/");
+            return ApiClient.BASE_URL + imageUrl;
+        }
+        return null;
+    }
+
+    public String getPrecioFormateado() {
+        NumberFormat formatoPrecio = NumberFormat.getCurrencyInstance(new Locale("es", "AR"));
+        return formatoPrecio.format(valor);
+    }
 }

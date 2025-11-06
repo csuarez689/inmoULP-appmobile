@@ -95,17 +95,19 @@ public class MenuActivity extends AppCompatActivity implements NavigationView.On
                 .setPositiveButton("Sí", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
-                        ApiClient.saveToken(getApplicationContext(),"");
-                        Snackbar.make(binding.getRoot(), "Sesión cerrada correctamente", Snackbar.LENGTH_SHORT).show();
-
-
-                        Intent intent = new Intent(MenuActivity.this, MainActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(intent);
+                        cerrarSesion();
                     }
                 })
                 .setNegativeButton("Cancelar", null)
                 .show();
+    }
+
+    private void cerrarSesion() {
+        ApiClient.saveToken(getApplicationContext(), "");
+        Snackbar.make(binding.getRoot(), "Sesión cerrada correctamente", Snackbar.LENGTH_SHORT).show();
+
+        Intent intent = new Intent(MenuActivity.this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 }

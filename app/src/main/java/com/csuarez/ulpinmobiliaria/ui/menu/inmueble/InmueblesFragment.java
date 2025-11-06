@@ -2,6 +2,7 @@ package com.csuarez.ulpinmobiliaria.ui.menu.inmueble;
 
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.csuarez.ulpinmobiliaria.R;
 import com.csuarez.ulpinmobiliaria.databinding.FragmentInmueblesBinding;
 import com.csuarez.ulpinmobiliaria.models.Inmueble;
 import com.google.android.material.snackbar.Snackbar;
@@ -50,7 +52,15 @@ public class InmueblesFragment extends Fragment {
                     binding.tvListaVacia.setVisibility(View.GONE);
                     binding.rvInmuebles.setVisibility(View.VISIBLE);
                     
-                    InmueblesAdapter adapter = new InmueblesAdapter(listaInmuebles, getLayoutInflater(), getContext());
+                    InmueblesAdapter adapter = new InmueblesAdapter(listaInmuebles, getLayoutInflater(), getContext(), new InmueblesAdapter.OnInmuebleClickListener() {
+                        @Override
+                        public void onInmuebleClick(Inmueble inmueble) {
+                            Bundle bundle = new Bundle();
+                            bundle.putSerializable("inmueble", inmueble);
+                            Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_menu)
+                                    .navigate(R.id.action_nav_inmuebles_to_detalleInmuebleFragment, bundle);
+                        }
+                    });
                     LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
                     binding.rvInmuebles.setLayoutManager(layoutManager);
                     binding.rvInmuebles.setAdapter(adapter);
