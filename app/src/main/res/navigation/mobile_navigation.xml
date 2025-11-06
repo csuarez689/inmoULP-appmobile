@@ -30,7 +30,7 @@
     <fragment
         android:id="@+id/nav_inmuebles"
         android:name="com.csuarez.ulpinmobiliaria.ui.menu.inmueble.InmueblesFragment"
-        android:label="Inmuebles"
+        android:label="Mis Inmuebles"
         tools:layout="@layout/fragment_inmuebles" >
         <action
             android:id="@+id/action_nav_inmuebles_to_detalleInmuebleFragment"
@@ -44,63 +44,55 @@
         android:id="@+id/detalleInmuebleFragment"
         android:name="com.csuarez.ulpinmobiliaria.ui.menu.inmueble.DetalleInmuebleFragment"
         android:label="Detalle del Inmueble"
-        tools:layout="@layout/fragment_detalle_inmueble" />
+        tools:layout="@layout/fragment_detalle_inmueble" >
+        <action
+            android:id="@+id/action_detalleInmuebleFragment_to_nav_inmuebles2"
+            app:destination="@id/nav_inmuebles" />
+    </fragment>
 
     <fragment
         android:id="@+id/agregarInmuebleFragment"
         android:name="com.csuarez.ulpinmobiliaria.ui.menu.inmueble.AgregarInmuebleFragment"
         android:label="Agregar Inmueble"
-        tools:layout="@layout/fragment_agregar_inmueble" />
-
-    <!--
+        tools:layout="@layout/fragment_agregar_inmueble" >
+        <action
+            android:id="@+id/action_agregarInmuebleFragment_to_nav_inmuebles2"
+            app:destination="@id/nav_inmuebles" />
+    </fragment>
 
     <fragment
-        android:id="@+id/inquilinoContratoFragment"
-        android:name="com.example.trabajopracticoinmobiliaria.menu.ui.inquilino_contrato.InquilinoContratoFragment"
-        android:label="@string/inmuebles"
-        tools:layout="@layout/fragment_inquilino_contrato" >
+        android:id="@+id/nav_contratos"
+        android:name="com.csuarez.ulpinmobiliaria.ui.menu.contrato.ContratosFragment"
+        android:label="Contratos"
+        tools:layout="@layout/fragment_contratos" >
         <action
-            android:id="@+id/action_inquilinoContratoFragment_to_detalleContratoFragment"
-            app:destination="@id/detalleContratoFragment" />
-        <action
-            android:id="@+id/action_inquilinoContratoFragment_to_detalleInquilinoFragment"
+            android:id="@+id/action_nav_contratos_to_detalleInquilinoFragment"
             app:destination="@id/detalleInquilinoFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/detalleInmuebleFragment"
-        android:name="com.example.trabajopracticoinmobiliaria.menu.ui.slideshow.DetalleInmuebleFragment"
-        android:label="@string/informaci_n_del_inmueble"
-        tools:layout="@layout/fragment_detalle_inmueble" />
-    <fragment
-        android:id="@+id/cambiarPasswordFragment"
-        android:name="com.example.trabajopracticoinmobiliaria.menu.ui.gallery.CambiarPasswordFragment"
-        android:label="@string/cambia_tu_contrase_a"
-        tools:layout="@layout/fragment_cambiar_password" />
-    <fragment
-        android:id="@+id/agregarInmuebleFragment"
-        android:name="com.example.trabajopracticoinmobiliaria.menu.ui.slideshow.AgregarInmuebleFragment"
-        android:label="@string/a_adir_un_nuevo_inmueble"
-        tools:layout="@layout/fragment_agregar_inmueble" />
-    <fragment
-        android:id="@+id/detalleContratoFragment"
-        android:name="com.example.trabajopracticoinmobiliaria.menu.ui.inquilino_contrato.DetalleContratoFragment"
-        android:label="@string/informaci_n_del_contrato"
-        tools:layout="@layout/fragment_detalle_contrato" >
         <action
-            android:id="@+id/action_detalleContratoFragment_to_detallePagosFragment"
-            app:destination="@id/detallePagosFragment" />
+            android:id="@+id/action_nav_contratos_to_detalleContratoFragment"
+            app:destination="@id/detalleContratoFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/detalleInquilinoFragment"
-        android:name="com.example.trabajopracticoinmobiliaria.menu.ui.inquilino_contrato.DetalleInquilinoFragment"
-        android:label="@string/informaci_n_del_inquilino"
-        tools:layout="@layout/fragment_detalle_inquilino" />
-    <fragment
-        android:id="@+id/detallePagosFragment"
-        android:name="com.example.trabajopracticoinmobiliaria.menu.ui.inquilino_contrato.DetallePagosFragment"
-        android:label="@string/informaci_n_de_los_pagos"
-        tools:layout="@layout/fragment_detalle_pagos" />
+        android:name="com.csuarez.ulpinmobiliaria.ui.menu.contrato.DetalleInquilinoFragment"
+        android:label="Inquilino"
+        tools:layout="@layout/fragment_detalle_inquilino" >
+        <action
+            android:id="@+id/action_detalleInquilinoFragment_to_nav_contratos"
+            app:destination="@id/nav_contratos" />
+    </fragment>
 
--->
+    <fragment
+        android:id="@+id/detalleContratoFragment"
+        android:name="com.csuarez.ulpinmobiliaria.ui.menu.contrato.DetalleContratoFragment"
+        android:label="Contrato"
+        tools:layout="@layout/fragment_detalle_contrato" >
+        <action
+            android:id="@+id/action_detalleContratoFragment_to_nav_contratos"
+            app:destination="@id/nav_contratos" />
+    </fragment>
+
+
 
 </navigation>

@@ -18,8 +18,8 @@ import retrofit2.Response;
 public class MainActivityViewModel extends AndroidViewModel {
     private MutableLiveData<String> mError = new MutableLiveData<>();
     private MutableLiveData<Boolean> mAgitar = new MutableLiveData<>();
-
     private MutableLiveData<Boolean> mLoggedIn = new MutableLiveData<>();
+    private MutableLiveData<String> mMensaje = new MutableLiveData<>();
 
     private  long lastShakeTime=0;
 
@@ -38,6 +38,10 @@ public class MainActivityViewModel extends AndroidViewModel {
 
     public LiveData<Boolean> getMLoggedIn() {
         return mLoggedIn;
+    }
+
+    public LiveData<String> getMMensaje() {
+        return mMensaje;
     }
 
     public void login(Editable usuario, Editable clave) {
@@ -95,9 +99,32 @@ public class MainActivityViewModel extends AndroidViewModel {
         mAgitar.setValue(false);
     }
 
+    public void resetPassword(String email) {
+        if (email.isEmpty()) {
+            mError.setValue("Ingrese un email");
+            return;
+        }
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            mError.setValue("Ingrese un email válido");
+            return;
+        }
 
+        ApiClient.ApiService api = ApiClient.getClient();
+        Call<String> llamada = api.resetPassword(email);
+        llamada.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(@NonNull Call<String> call, @NonNull Response<String> response) {
+                if (response.isSuccessful()) {
+                    mMensaje.postValue("Se enviaron las instrucciones a su email");
+                } else {
+                    mError.postValue("Email no encontrado");
+                }
+            }
 
-
-
-
+            @Override
+            public void onFailure(@NonNull Call<String> call, @NonNull Throwable t) {
+                mError.postValue("Error de conexión");
+            }
+        });
+    }
 }

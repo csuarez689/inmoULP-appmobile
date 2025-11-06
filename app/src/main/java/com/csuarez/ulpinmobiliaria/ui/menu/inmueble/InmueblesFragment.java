@@ -18,7 +18,7 @@ import android.view.ViewGroup;
 import com.csuarez.ulpinmobiliaria.R;
 import com.csuarez.ulpinmobiliaria.databinding.FragmentInmueblesBinding;
 import com.csuarez.ulpinmobiliaria.models.Inmueble;
-import com.google.android.material.snackbar.Snackbar;
+import com.csuarez.ulpinmobiliaria.utils.SnackbarUtils;
 
 import java.util.List;
 
@@ -38,9 +38,7 @@ public class InmueblesFragment extends Fragment {
         inmueblesVm.getMError().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(String s) {
-                Snackbar.make(binding.getRoot(), s, Snackbar.LENGTH_LONG)
-                            .setBackgroundTint(0xFFE57373)
-                            .show();
+                SnackbarUtils.mostrarError(binding.getRoot(), s);
             }
         });
 

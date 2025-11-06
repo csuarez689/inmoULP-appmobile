@@ -30,7 +30,7 @@ import androidx.fragment.app.Fragment;
 import com.csuarez.ulpinmobiliaria.R;
 import com.csuarez.ulpinmobiliaria.databinding.FragmentAgregarInmuebleBinding;
 import com.csuarez.ulpinmobiliaria.models.Inmueble;
-import com.google.android.material.snackbar.Snackbar;
+import com.csuarez.ulpinmobiliaria.utils.SnackbarUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -59,9 +59,7 @@ public class AgregarInmuebleFragment extends Fragment {
                     if (isGranted) {
                         tomarFoto();
                     } else {
-                        Snackbar.make(binding.getRoot(), "Permiso de cámara denegado", Snackbar.LENGTH_LONG)
-                                .setBackgroundTint(0xFFE57373)
-                                .show();
+                        SnackbarUtils.mostrarError(binding.getRoot(), "Permiso de cámara denegado");
                     }
                 });
     }
@@ -96,11 +94,7 @@ public class AgregarInmuebleFragment extends Fragment {
         agregarVm.getMError().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(String error) {
-                if (error != null && !error.isEmpty()) {
-                    Snackbar.make(binding.getRoot(), error, Snackbar.LENGTH_LONG)
-                            .setBackgroundTint(0xFFE57373)
-                            .show();
-                }
+                SnackbarUtils.mostrarError(binding.getRoot(), error);
             }
         });
 
@@ -109,7 +103,7 @@ public class AgregarInmuebleFragment extends Fragment {
             @Override
             public void onChanged(String mensaje) {
                 if (mensaje != null && !mensaje.isEmpty()) {
-                    Snackbar.make(binding.getRoot(), mensaje, Snackbar.LENGTH_SHORT).show();
+                    SnackbarUtils.mostrarExito(binding.getRoot(), mensaje, true);
                     // Volver atrás
                     Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_menu).popBackStack();
                 }
@@ -191,9 +185,7 @@ public class AgregarInmuebleFragment extends Fragment {
             }
         } catch (IOException e) {
             e.printStackTrace();
-            Snackbar.make(binding.getRoot(), "Error al crear el archivo de imagen", Snackbar.LENGTH_LONG)
-                    .setBackgroundTint(0xFFE57373)
-                    .show();
+            SnackbarUtils.mostrarError(binding.getRoot(), "Error al crear el archivo de imagen");
         }
     }
 

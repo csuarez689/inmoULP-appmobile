@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="3dp"
+    app:cardBackgroundColor="#F5F5F5">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp">
+
+        <!-- Imagen del inmueble -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardImagen"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="2dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/ivInmuebleInquilino"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:contentDescription="Imagen del inmueble" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Dirección -->
+        <TextView
+            android:id="@+id/tvDireccionInquilino"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="8dp"
+            android:text="Dirección"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimary"
+            android:maxLines="2"
+            android:ellipsize="end"
+            app:layout_constraintStart_toEndOf="@id/cardImagen"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/cardImagen" />
+
+        <!-- Botón Ver Inquilino -->
+        <Button
+            android:id="@+id/btnVerInquilino"
+            android:layout_width="0dp"
+            android:layout_height="36dp"
+            android:text="INQUILINO"
+            android:textSize="12sp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="4dp"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            app:layout_constraintStart_toEndOf="@id/cardImagen"
+            app:layout_constraintEnd_toStartOf="@+id/btnVerContrato"
+            app:layout_constraintTop_toBottomOf="@id/tvDireccionInquilino"
+            app:layout_constraintHorizontal_chainStyle="spread" />
+
+        <!-- Botón Ver Contrato -->
+        <Button
+            android:id="@+id/btnVerContrato"
+            android:layout_width="0dp"
+            android:layout_height="36dp"
+            android:text="CONTRATO"
+            android:textSize="12sp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            style="@style/Widget.Material3.Button"
+            app:layout_constraintStart_toEndOf="@id/btnVerInquilino"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvDireccionInquilino" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

@@ -10,6 +10,7 @@ import com.csuarez.ulpinmobiliaria.MainActivity;
 import com.csuarez.ulpinmobiliaria.R;
 import com.csuarez.ulpinmobiliaria.databinding.ActivityMenuBinding;
 import com.csuarez.ulpinmobiliaria.network.ApiClient;
+import com.csuarez.ulpinmobiliaria.utils.SnackbarUtils;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -48,7 +49,7 @@ public class MenuActivity extends AppCompatActivity implements NavigationView.On
 
 
         appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_perfil, R.id.nav_inmuebles)
+                R.id.nav_home, R.id.nav_perfil, R.id.nav_inmuebles, R.id.nav_contratos)
                 .setOpenableLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_menu);
@@ -104,7 +105,7 @@ public class MenuActivity extends AppCompatActivity implements NavigationView.On
 
     private void cerrarSesion() {
         ApiClient.saveToken(getApplicationContext(), "");
-        Snackbar.make(binding.getRoot(), "Sesión cerrada correctamente", Snackbar.LENGTH_SHORT).show();
+        SnackbarUtils.mostrarExito(binding.getRoot(), "Sesión cerrada correctamente", true);
 
         Intent intent = new Intent(MenuActivity.this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

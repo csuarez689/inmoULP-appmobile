@@ -18,7 +18,7 @@ import com.bumptech.glide.Glide;
 import com.csuarez.ulpinmobiliaria.R;
 import com.csuarez.ulpinmobiliaria.databinding.FragmentDetalleInmuebleBinding;
 import com.csuarez.ulpinmobiliaria.models.Inmueble;
-import com.google.android.material.snackbar.Snackbar;
+import com.csuarez.ulpinmobiliaria.utils.SnackbarUtils;
 
 public class DetalleInmuebleFragment extends Fragment {
 
@@ -49,11 +49,7 @@ public class DetalleInmuebleFragment extends Fragment {
         detalleVm.getMError().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(String error) {
-                if (error != null && !error.isEmpty()) {
-                    Snackbar.make(binding.getRoot(), error, Snackbar.LENGTH_LONG)
-                            .setBackgroundTint(0xFFE57373)
-                            .show();
-                }
+                SnackbarUtils.mostrarError(binding.getRoot(), error);
             }
         });
 
@@ -61,9 +57,7 @@ public class DetalleInmuebleFragment extends Fragment {
         detalleVm.getMMensaje().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(String mensaje) {
-                if (mensaje != null && !mensaje.isEmpty()) {
-                    Snackbar.make(binding.getRoot(), mensaje, Snackbar.LENGTH_SHORT).show();
-                }
+                SnackbarUtils.mostrarExito(binding.getRoot(), mensaje, true);
             }
         });
 

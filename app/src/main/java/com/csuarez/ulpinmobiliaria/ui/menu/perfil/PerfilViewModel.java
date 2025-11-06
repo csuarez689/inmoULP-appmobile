@@ -16,9 +16,9 @@ import retrofit2.Response;
 
 public class PerfilViewModel extends AndroidViewModel {
     private MutableLiveData<Propietario> mPropietario = new MutableLiveData<>();
-    private MutableLiveData<String> mError = new MutableLiveData<>();
+    private MutableLiveData<String> mMensaje = new MutableLiveData<>();
     private MutableLiveData<Boolean> mEditMode = new MutableLiveData<>(false);
-    private MutableLiveData<String> mValError = new MutableLiveData<>();
+    private MutableLiveData<String> mError = new MutableLiveData<>();
 
 
     private static final String REGEX_EMAIL = "^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$";
@@ -35,16 +35,16 @@ public class PerfilViewModel extends AndroidViewModel {
         return mPropietario;
     }
 
-    public LiveData<String> getMError() {
-        return mError;
+    public LiveData<String> getMMensaje() {
+        return mMensaje;
     }
 
     public LiveData<Boolean> getMEditMode() {
         return mEditMode;
     }
 
-    public LiveData<String> getMValError() {
-        return mValError;
+    public LiveData<String> getMError() {
+        return mError;
     }
 
     //cargar datos del perfil
@@ -87,7 +87,7 @@ public class PerfilViewModel extends AndroidViewModel {
         }
     }
 
-     public void guardarCambios(Propietario propietario) {
+    public void guardarCambios(Propietario propietario) {
         String token = ApiClient.getToken(getApplication());
         Call<Propietario> call = ApiClient.getClient().actualizarPropietario("Bearer " + token, propietario);
 
@@ -96,7 +96,7 @@ public class PerfilViewModel extends AndroidViewModel {
             public void onResponse(Call<Propietario> call, Response<Propietario> response) {
                 if (response.isSuccessful()) {
                     mPropietario.setValue(response.body());
-                    mError.setValue("Perfil actualizado correctamente");
+                    mMensaje.setValue("Perfil actualizado correctamente");
                     mEditMode.setValue(false);
                 } else {
                     mError.setValue("Error al actualizar el perfil");
@@ -113,32 +113,32 @@ public class PerfilViewModel extends AndroidViewModel {
     private boolean validarCampos(Propietario p) {
         if (p.getNombre().isEmpty() || p.getApellido().isEmpty() ||
                 p.getDni().isEmpty() || p.getTelefono().isEmpty() || p.getEmail().isEmpty()) {
-            mValError.setValue("No deje campos vacíos.");
+            mError.setValue("No deje campos vacíos.");
             return false;
         }
 
         if (!p.getNombre().matches(REGEX_TEXTO)) {
-            mValError.setValue("El nombre contiene caracteres inválidos.");
+            mError.setValue("El nombre contiene caracteres inválidos.");
             return false;
         }
 
         if (!p.getApellido().matches(REGEX_TEXTO)) {
-            mValError.setValue("El apellido contiene caracteres inválidos.");
+            mError.setValue("El apellido contiene caracteres inválidos.");
             return false;
         }
 
         if (!p.getDni().matches(REGEX_DNI)) {
-            mValError.setValue("El DNI debe tener 7 u 8 números.");
+            mError.setValue("El DNI debe tener 7 u 8 números.");
             return false;
         }
 
         if (!p.getTelefono().matches(REGEX_TEL)) {
-            mValError.setValue("El teléfono no es válido.");
+            mError.setValue("El teléfono no es válido.");
             return false;
         }
 
         if (!p.getEmail().matches(REGEX_EMAIL)) {
-            mValError.setValue("El email no es válido.");
+            mError.setValue("El email no es válido.");
             return false;
         }
 

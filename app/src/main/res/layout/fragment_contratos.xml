@@ -6,25 +6,25 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    tools:context=".ui.menu.inmueble.InmueblesFragment">
+    tools:context=".ui.menu.contrato.ContratosFragment">
 
     <!-- RecyclerView -->
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvInmuebles"
+        android:id="@+id/rvInquilinos"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:listitem="@layout/item_inmueble"/>
+        tools:listitem="@layout/item_contrato"/>
 
     <!-- Mensaje lista vacía -->
     <TextView
         android:id="@+id/tvListaVacia"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="No hay inmuebles disponibles"
+        android:text="No hay inmuebles alquilados"
         android:textSize="16sp"
         android:textColor="#757575"
         android:visibility="gone"
@@ -32,15 +32,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabAgregarInmueble"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:contentDescription="Agregar Inmueble"
-        android:src="@android:drawable/ic_input_add"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -15,7 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.csuarez.ulpinmobiliaria.databinding.FragmentCambiarPasswordBinding;
-import com.google.android.material.snackbar.Snackbar;
+import com.csuarez.ulpinmobiliaria.utils.SnackbarUtils;
 
 public class CambiarPasswordFragment extends Fragment {
 
@@ -35,11 +35,7 @@ public class CambiarPasswordFragment extends Fragment {
         cambiarPasswordVm.getMError().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(String error) {
-                if (error != null && !error.isEmpty()) {
-                    Snackbar.make(binding.getRoot(), error, Snackbar.LENGTH_LONG)
-                            .setBackgroundTint(0xFFE57373)
-                            .show();
-                }
+                SnackbarUtils.mostrarError(binding.getRoot(), error);
             }
         });
 
@@ -49,7 +45,7 @@ public class CambiarPasswordFragment extends Fragment {
                     binding.etClaveActual.setText("");
                     binding.etNuevaClave.setText("");
                     binding.etConfirmarNuevaClave.setText("");
-                    Snackbar.make(binding.getRoot(), msj, Snackbar.LENGTH_SHORT).show();
+                    SnackbarUtils.mostrarExito(binding.getRoot(), msj, true);
                     NavHostFragment.findNavController(CambiarPasswordFragment.this).popBackStack();
 
             }
