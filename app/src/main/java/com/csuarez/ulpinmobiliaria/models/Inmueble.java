@@ -8,6 +8,12 @@ import java.util.Locale;
 
 public class Inmueble implements Serializable {
     
+    // Constantes para tipos de inmueble
+    public static final String[] TIPOS = {"Casa", "Departamento", "Local", "Terreno", "Oficina"};
+    
+    // Constantes para usos de inmueble
+    public static final String[] USOS = {"Residencial", "Comercial"};
+    
     private int idInmueble;
     private String direccion;
     private String uso;

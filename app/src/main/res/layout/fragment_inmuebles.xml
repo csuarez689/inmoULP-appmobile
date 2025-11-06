@@ -39,7 +39,7 @@
         android:id="@+id/tvListaVacia"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="No hay inmuebles registrados"
+        android:text="No hay inmuebles disponibles"
         android:textSize="16sp"
         android:textColor="#757575"
         android:visibility="gone"
@@ -47,5 +47,15 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabAgregarInmueble"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:contentDescription="Agregar Inmueble"
+        android:src="@android:drawable/ic_input_add"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

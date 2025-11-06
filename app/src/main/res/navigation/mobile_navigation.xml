@@ -35,6 +35,9 @@
         <action
             android:id="@+id/action_nav_inmuebles_to_detalleInmuebleFragment"
             app:destination="@id/detalleInmuebleFragment" />
+        <action
+            android:id="@+id/action_nav_inmuebles_to_agregarInmuebleFragment"
+            app:destination="@id/agregarInmuebleFragment" />
     </fragment>
 
     <fragment
@@ -42,6 +45,12 @@
         android:name="com.csuarez.ulpinmobiliaria.ui.menu.inmueble.DetalleInmuebleFragment"
         android:label="Detalle del Inmueble"
         tools:layout="@layout/fragment_detalle_inmueble" />
+
+    <fragment
+        android:id="@+id/agregarInmuebleFragment"
+        android:name="com.csuarez.ulpinmobiliaria.ui.menu.inmueble.AgregarInmuebleFragment"
+        android:label="Agregar Inmueble"
+        tools:layout="@layout/fragment_agregar_inmueble" />
 
     <!--
 

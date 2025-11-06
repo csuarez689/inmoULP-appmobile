@@ -74,6 +74,15 @@ public class InmueblesFragment extends Fragment {
         // Cargar inmuebles
         inmueblesVm.cargarInmuebles();
 
+        // FAB para agregar inmueble
+        binding.fabAgregarInmueble.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_menu)
+                        .navigate(R.id.action_nav_inmuebles_to_agregarInmuebleFragment);
+            }
+        });
+
         return root;
     }
 
