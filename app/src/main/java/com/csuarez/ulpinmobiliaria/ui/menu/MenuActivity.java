@@ -48,7 +48,7 @@ public class MenuActivity extends AppCompatActivity implements NavigationView.On
 
 
         appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home,R.id.nav_perfil)
+                R.id.nav_home, R.id.nav_perfil, R.id.nav_inmuebles)
                 .setOpenableLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_menu);

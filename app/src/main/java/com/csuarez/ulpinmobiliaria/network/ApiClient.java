@@ -3,6 +3,7 @@ package com.csuarez.ulpinmobiliaria.network;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.csuarez.ulpinmobiliaria.models.Inmueble;
 import com.csuarez.ulpinmobiliaria.models.Propietario;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -23,7 +24,7 @@ import retrofit2.http.PUT;
 
 public class ApiClient {
 
-    private static final String BASE_URL="https://inmobiliariaulp-amb5hwfqaraweyga.canadacentral-01.azurewebsites.net/";
+    public static final String BASE_URL="https://inmobiliariaulp-amb5hwfqaraweyga.canadacentral-01.azurewebsites.net/";
     private static Retrofit retrofit;
 
 
@@ -82,6 +83,11 @@ public class ApiClient {
         @PUT("api/Propietarios/changePassword")
         Call<Void> cambiarPassword(@Header("Authorization") String token, @Field("currentPassword") String passActual, @Field("newPassword") String passNueva);
 
+        @GET("api/Inmuebles")
+        Call<java.util.List<Inmueble>> getInmuebles(@Header("Authorization") String token);
+
+        @PUT("api/Inmuebles/actualizar")
+        Call<Inmueble> actualizarInmueble(@Header("Authorization") String token, @Body Inmueble inmueble);
 
     }
 
