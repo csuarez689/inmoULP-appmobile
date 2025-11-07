@@ -23,6 +23,7 @@ public class DetalleContratoViewModel extends AndroidViewModel {
     private MutableLiveData<List<Pago>> mPagos = new MutableLiveData<>();
     private MutableLiveData<String> mError = new MutableLiveData<>();
     private MutableLiveData<Boolean> mPagosVacio = new MutableLiveData<>();
+    private MutableLiveData<Boolean> mCargando = new MutableLiveData<>();
 
     public DetalleContratoViewModel(@NonNull Application application) {
         super(application);
@@ -44,7 +45,13 @@ public class DetalleContratoViewModel extends AndroidViewModel {
         return mPagosVacio;
     }
 
+    public LiveData<Boolean> getMCargando() {
+        return mCargando;
+    }
+
     public void cargarContrato(int idInmueble) {
+        mCargando.setValue(true);
+
         String token = ApiClient.getToken(getApplication());
         Call<Contrato> llamada = ApiClient.getClient().getContratoPorInmueble("Bearer " + token, idInmueble);
 
@@ -57,12 +64,14 @@ public class DetalleContratoViewModel extends AndroidViewModel {
                     // Cargar pagos del contrato
                     cargarPagos(contrato.getIdContrato());
                 } else {
+                    mCargando.setValue(false);
                     mError.setValue("Error al cargar información del contrato");
                 }
             }
 
             @Override
             public void onFailure(Call<Contrato> call, Throwable t) {
+                mCargando.setValue(false);
                 mError.setValue("Error de conexión: " + t.getMessage());
             }
         });
@@ -75,6 +84,8 @@ public class DetalleContratoViewModel extends AndroidViewModel {
         llamada.enqueue(new Callback<List<Pago>>() {
             @Override
             public void onResponse(Call<List<Pago>> call, Response<List<Pago>> response) {
+                mCargando.setValue(false);
+
                 if (response.isSuccessful() && response.body() != null) {
                     List<Pago> pagos = response.body();
                     // Ordenar en orden inverso (más reciente primero)
@@ -88,6 +99,7 @@ public class DetalleContratoViewModel extends AndroidViewModel {
 
             @Override
             public void onFailure(Call<List<Pago>> call, Throwable t) {
+                mCargando.setValue(false);
                 mError.setValue("Error al cargar pagos: " + t.getMessage());
                 mPagosVacio.setValue(true);
             }

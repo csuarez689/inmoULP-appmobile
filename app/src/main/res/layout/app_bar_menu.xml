@@ -21,6 +21,15 @@
             app:titleMarginStart="0dp"
             app:titleMarginEnd="48dp"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+        
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:indeterminate="true"
+            android:visibility="gone"
+            android:indeterminateTint="@color/colorPrimary" />
 
     </com.google.android.material.appbar.AppBarLayout>
 

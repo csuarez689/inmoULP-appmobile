@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.csuarez.ulpinmobiliaria.databinding.FragmentCambiarPasswordBinding;
+import com.csuarez.ulpinmobiliaria.ui.menu.MenuActivity;
 import com.csuarez.ulpinmobiliaria.utils.SnackbarUtils;
 
 public class CambiarPasswordFragment extends Fragment {
@@ -31,6 +32,21 @@ public class CambiarPasswordFragment extends Fragment {
         binding = FragmentCambiarPasswordBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
+
+        // observer para el loader
+        cambiarPasswordVm.getMCargando().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean cargando) {
+                MenuActivity activity = (MenuActivity) getActivity();
+                if (activity != null) {
+                    if (cargando) {
+                        activity.mostrarLoader();
+                    } else {
+                        activity.ocultarLoader();
+                    }
+                }
+            }
+        });
 
         cambiarPasswordVm.getMError().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override

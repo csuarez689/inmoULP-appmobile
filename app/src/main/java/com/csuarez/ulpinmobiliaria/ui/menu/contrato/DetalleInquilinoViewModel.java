@@ -19,6 +19,7 @@ public class DetalleInquilinoViewModel extends AndroidViewModel {
 
     private MutableLiveData<Inquilino> mInquilino = new MutableLiveData<>();
     private MutableLiveData<String> mError = new MutableLiveData<>();
+    private MutableLiveData<Boolean> mCargando = new MutableLiveData<>();
 
     public DetalleInquilinoViewModel(@NonNull Application application) {
         super(application);
@@ -32,13 +33,21 @@ public class DetalleInquilinoViewModel extends AndroidViewModel {
         return mError;
     }
 
+    public LiveData<Boolean> getMCargando() {
+        return mCargando;
+    }
+
     public void cargarInquilino(int idInmueble) {
+        mCargando.setValue(true);
+
         String token = ApiClient.getToken(getApplication());
         Call<Contrato> llamada = ApiClient.getClient().getContratoPorInmueble("Bearer " + token, idInmueble);
 
         llamada.enqueue(new Callback<Contrato>() {
             @Override
             public void onResponse(Call<Contrato> call, Response<Contrato> response) {
+                mCargando.setValue(false);
+
                 if (response.isSuccessful() && response.body() != null) {
                     Contrato contrato = response.body();
                     if (contrato.getInquilino() != null) {
@@ -53,6 +62,7 @@ public class DetalleInquilinoViewModel extends AndroidViewModel {
 
             @Override
             public void onFailure(Call<Contrato> call, Throwable t) {
+                mCargando.setValue(false);
                 mError.setValue("Error de conexión: " + t.getMessage());
             }
         });

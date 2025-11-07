@@ -21,6 +21,7 @@ public class ContratosViewModel extends AndroidViewModel {
     private MutableLiveData<List<Inmueble>> mInmueblesConContrato = new MutableLiveData<>();
     private MutableLiveData<String> mError = new MutableLiveData<>();
     private MutableLiveData<Boolean> mListaVacia = new MutableLiveData<>();
+    private MutableLiveData<Boolean> mCargando = new MutableLiveData<>();
 
     public ContratosViewModel(@NonNull Application application) {
         super(application);
@@ -38,13 +39,21 @@ public class ContratosViewModel extends AndroidViewModel {
         return mListaVacia;
     }
 
+    public LiveData<Boolean> getMCargando() {
+        return mCargando;
+    }
+
     public void cargarInmueblesConContrato() {
+        mCargando.setValue(true);
+
         String token = ApiClient.getToken(getApplication());
         Call<List<Inmueble>> llamada = ApiClient.getClient().getInmueblesConContratoVigente("Bearer " + token);
 
         llamada.enqueue(new Callback<List<Inmueble>>() {
             @Override
             public void onResponse(Call<List<Inmueble>> call, Response<List<Inmueble>> response) {
+                mCargando.setValue(false);
+
                 if (response.isSuccessful() && response.body() != null) {
                     List<Inmueble> inmuebles = response.body();
                     mInmueblesConContrato.setValue(inmuebles);
@@ -57,6 +66,7 @@ public class ContratosViewModel extends AndroidViewModel {
 
             @Override
             public void onFailure(Call<List<Inmueble>> call, Throwable t) {
+                mCargando.setValue(false);
                 mError.setValue("Error de conexión: " + t.getMessage());
                 mListaVacia.setValue(true);
             }

@@ -17,6 +17,8 @@ public class CambiarPasswordViewModel extends AndroidViewModel {
 
     private MutableLiveData<String> mError = new MutableLiveData<>();
     private MutableLiveData<String> mSuccess = new MutableLiveData<>();
+    private MutableLiveData<Boolean> mCargando = new MutableLiveData<>();
+    
     public CambiarPasswordViewModel(@NonNull Application application) {
         super(application);
     }
@@ -24,6 +26,7 @@ public class CambiarPasswordViewModel extends AndroidViewModel {
 
     public LiveData<String> getMError() { return mError; }
     public LiveData<String> getMSuccess() { return mSuccess; }
+    public LiveData<Boolean> getMCargando() { return mCargando; }
 
 
     public void actualizarPassword(String actual, String nueva, String confirmar) {
@@ -33,6 +36,8 @@ public class CambiarPasswordViewModel extends AndroidViewModel {
             return;
         }
 
+        mCargando.setValue(true);
+        
         String token = ApiClient.getToken(getApplication());
         Call<Void> call = ApiClient.getClient()
                 .cambiarPassword("Bearer " + token, actual, nueva);
@@ -40,6 +45,8 @@ public class CambiarPasswordViewModel extends AndroidViewModel {
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
+                mCargando.setValue(false);
+                
                 if (response.isSuccessful()) {
                     mSuccess.setValue("Contraseña actualizada correctamente.");
                 } else if (response.code() == 400) {
@@ -51,6 +58,7 @@ public class CambiarPasswordViewModel extends AndroidViewModel {
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
+                mCargando.setValue(false);
                 mError.postValue("Error de conexión con el servidor.");
             }
         });
@@ -73,6 +81,6 @@ public class CambiarPasswordViewModel extends AndroidViewModel {
             return "Las contraseñas no coinciden.";
         }
 
-        return null; // Todo correcto
+        return null;
     }
 }

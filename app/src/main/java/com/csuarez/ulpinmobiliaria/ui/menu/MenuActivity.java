@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import com.csuarez.ulpinmobiliaria.MainActivity;
 import com.csuarez.ulpinmobiliaria.R;
@@ -24,14 +26,13 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
-
 public class MenuActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private AppBarConfiguration appBarConfiguration;
     private ActivityMenuBinding binding;
 
     private DrawerLayout drawer;
-
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,11 +43,12 @@ public class MenuActivity extends AppCompatActivity implements NavigationView.On
 
         setSupportActionBar(binding.appBarMenu.toolbar);
 
+        progressBar = binding.appBarMenu.progressBar;
+
         drawer = binding.drawerLayout;
 
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
-
 
         appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_home, R.id.nav_perfil, R.id.nav_inmuebles, R.id.nav_contratos)
@@ -57,9 +59,7 @@ public class MenuActivity extends AppCompatActivity implements NavigationView.On
         NavigationUI.setupWithNavController(navigationView, navController);
 
         navigationView.setNavigationItemSelectedListener(this);
-
     }
-
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -110,5 +110,28 @@ public class MenuActivity extends AppCompatActivity implements NavigationView.On
         Intent intent = new Intent(MenuActivity.this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
+    }
+
+    // metodos publicos para controlar el loader global
+    public void mostrarLoader() {
+        if (progressBar != null) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    progressBar.setVisibility(View.VISIBLE);
+                }
+            });
+        }
+    }
+
+    public void ocultarLoader() {
+        if (progressBar != null) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    progressBar.setVisibility(View.GONE);
+                }
+            });
+        }
     }
 }

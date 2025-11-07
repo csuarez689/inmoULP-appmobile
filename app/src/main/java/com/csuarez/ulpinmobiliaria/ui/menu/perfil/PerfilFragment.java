@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import com.csuarez.ulpinmobiliaria.R;
 import com.csuarez.ulpinmobiliaria.databinding.FragmentPerfilBinding;
 import com.csuarez.ulpinmobiliaria.models.Propietario;
+import com.csuarez.ulpinmobiliaria.ui.menu.MenuActivity;
 import com.csuarez.ulpinmobiliaria.utils.SnackbarUtils;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -34,24 +35,50 @@ public class PerfilFragment extends Fragment {
         binding=FragmentPerfilBinding.inflate(inflater,container,false);
         View root=binding.getRoot();
 
-
-        perfilVm.getMPropietario().observe(getViewLifecycleOwner(), new Observer<Propietario>() {
+        // observer para el loader
+        perfilVm.getMCargando().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
-            public void onChanged(Propietario propietario) {
-                if (propietario != null) {
-                    binding.etNombre.setText(propietario.getNombre());
-                    binding.etApellido.setText(propietario.getApellido());
-                    binding.etDni.setText(propietario.getDni());
-                    binding.etEmail.setText(propietario.getEmail());
-                    binding.etTelefono.setText(propietario.getTelefono());
+            public void onChanged(Boolean cargando) {
+                MenuActivity activity = (MenuActivity) getActivity();
+                if (activity != null) {
+                    if (cargando) {
+                        activity.mostrarLoader();
+                    } else {
+                        activity.ocultarLoader();
+                    }
                 }
             }
         });
 
-        perfilVm.getMEditMode().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+        // observer para el propietario
+        perfilVm.getMPropietario().observe(getViewLifecycleOwner(), new Observer<Propietario>() {
             @Override
-            public void onChanged(Boolean isEditMode) {
-                cambiarModo(isEditMode);
+            public void onChanged(Propietario propietario) {
+                binding.etNombre.setText(propietario.getNombre());
+                binding.etApellido.setText(propietario.getApellido());
+                binding.etDni.setText(propietario.getDni());
+                binding.etEmail.setText(propietario.getEmail());
+                binding.etTelefono.setText(propietario.getTelefono());
+            }
+        });
+
+        // observer para el texto del boton
+        perfilVm.getMTextoBoton().observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(String texto) {
+                binding.btnGuardar.setText(texto);
+            }
+        });
+
+        // observer para habilitar o deshabilitar campos
+        perfilVm.getMCamposHabilitados().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean habilitados) {
+                binding.etNombre.setEnabled(habilitados);
+                binding.etApellido.setEnabled(habilitados);
+                binding.etTelefono.setEnabled(habilitados);
+                binding.etEmail.setEnabled(habilitados);
+                binding.etDni.setEnabled(habilitados);
             }
         });
 
@@ -69,8 +96,6 @@ public class PerfilFragment extends Fragment {
             }
         });
 
-
-
         binding.btnGuardar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -84,7 +109,6 @@ public class PerfilFragment extends Fragment {
             }
         });
 
-
         binding.btnChangePassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -94,20 +118,8 @@ public class PerfilFragment extends Fragment {
         });
 
         perfilVm.cargarPerfil();
-                cambiarModo(false);
         return root;
     }
-
-    private void cambiarModo(boolean isEditMode){
-        String text= isEditMode ? "Guardar" : "Editar";
-        binding.btnGuardar.setText(text);
-        binding.etNombre.setEnabled(isEditMode);
-        binding.etApellido.setEnabled(isEditMode);
-        binding.etTelefono.setEnabled(isEditMode);
-        binding.etEmail.setEnabled(isEditMode);
-        binding.etDni.setEnabled(isEditMode);
-    }
-
 
     @Override
     public void onDestroyView(){

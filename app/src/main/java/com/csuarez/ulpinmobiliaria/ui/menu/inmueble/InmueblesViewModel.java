@@ -20,6 +20,8 @@ public class InmueblesViewModel extends AndroidViewModel {
     
     private MutableLiveData<List<Inmueble>> mLista = new MutableLiveData<>();
     private MutableLiveData<String> mError = new MutableLiveData<>();
+    private MutableLiveData<Boolean> mCargando = new MutableLiveData<>();
+    private MutableLiveData<Boolean> mListaVacia = new MutableLiveData<>(true);
 
     public InmueblesViewModel(@NonNull Application application) {
         super(application);
@@ -32,16 +34,30 @@ public class InmueblesViewModel extends AndroidViewModel {
     public LiveData<String> getMError() {
         return mError;
     }
+    
+    public LiveData<Boolean> getMCargando() {
+        return mCargando;
+    }
+    
+    public LiveData<Boolean> getMListaVacia() {
+        return mListaVacia;
+    }
 
     public void cargarInmuebles() {
+        mCargando.setValue(true);
+        
         String token = ApiClient.getToken(getApplication());
         Call<List<Inmueble>> llamada = ApiClient.getClient().getInmuebles("Bearer " + token);
         
         llamada.enqueue(new Callback<List<Inmueble>>() {
             @Override
             public void onResponse(@NonNull Call<List<Inmueble>> call, @NonNull Response<List<Inmueble>> response) {
+                mCargando.setValue(false);
+                
                 if (response.isSuccessful() && response.body() != null) {
-                    mLista.postValue(response.body());
+                    List<Inmueble> inmuebles = response.body();
+                    mLista.postValue(inmuebles);
+                    mListaVacia.postValue(inmuebles.isEmpty());
                 } else {
                     mError.setValue("Error al cargar inmuebles");
                 }
@@ -49,7 +65,9 @@ public class InmueblesViewModel extends AndroidViewModel {
 
             @Override
             public void onFailure(@NonNull Call<List<Inmueble>> call, @NonNull Throwable t) {
+                mCargando.setValue(false);
                 mError.setValue("Error de servidor");
+                mListaVacia.setValue(true);
             }
         });
     }

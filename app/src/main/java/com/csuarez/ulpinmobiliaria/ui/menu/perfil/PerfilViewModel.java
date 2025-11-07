@@ -19,7 +19,11 @@ public class PerfilViewModel extends AndroidViewModel {
     private MutableLiveData<String> mMensaje = new MutableLiveData<>();
     private MutableLiveData<Boolean> mEditMode = new MutableLiveData<>(false);
     private MutableLiveData<String> mError = new MutableLiveData<>();
+    private MutableLiveData<Boolean> mCargando = new MutableLiveData<>();
+    
 
+    private MutableLiveData<String> mTextoBoton = new MutableLiveData<>("Editar");
+    private MutableLiveData<Boolean> mCamposHabilitados = new MutableLiveData<>(false);
 
     private static final String REGEX_EMAIL = "^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$";
     private static final String REGEX_DNI = "^\\d{7,8}$";
@@ -29,7 +33,6 @@ public class PerfilViewModel extends AndroidViewModel {
     public PerfilViewModel(@NonNull Application application) {
         super(application);
     }
-
 
     public LiveData<Propietario> getMPropietario() {
         return mPropietario;
@@ -47,13 +50,29 @@ public class PerfilViewModel extends AndroidViewModel {
         return mError;
     }
 
-    //cargar datos del perfil
+    public LiveData<Boolean> getMCargando() {
+        return mCargando;
+    }
+    
+    public LiveData<String> getMTextoBoton() {
+        return mTextoBoton;
+    }
+    
+    public LiveData<Boolean> getMCamposHabilitados() {
+        return mCamposHabilitados;
+    }
+
+    // cargar datos del perfil
     public void cargarPerfil() {
+        mCargando.setValue(true);
+        
         String token = ApiClient.getToken(getApplication());
         Call<Propietario> call = ApiClient.getClient().getPropietario("Bearer " + token);
         call.enqueue(new Callback<Propietario>() {
             @Override
             public void onResponse(Call<Propietario> call, Response<Propietario> response) {
+                mCargando.setValue(false);
+                
                 if (response.isSuccessful()) {
                     mPropietario.setValue(response.body());
                 } else {
@@ -63,6 +82,7 @@ public class PerfilViewModel extends AndroidViewModel {
 
             @Override
             public void onFailure(Call<Propietario> call, Throwable t) {
+                mCargando.setValue(false);
                 mError.setValue("Error de servidor");
             }
         });
@@ -84,20 +104,29 @@ public class PerfilViewModel extends AndroidViewModel {
             }
         } else {
             mEditMode.setValue(true);
+            mTextoBoton.setValue("Guardar");  
+            mCamposHabilitados.setValue(true);  
         }
     }
 
     public void guardarCambios(Propietario propietario) {
+        mCargando.setValue(true);
+        
         String token = ApiClient.getToken(getApplication());
         Call<Propietario> call = ApiClient.getClient().actualizarPropietario("Bearer " + token, propietario);
 
         call.enqueue(new Callback<Propietario>() {
             @Override
             public void onResponse(Call<Propietario> call, Response<Propietario> response) {
+                mCargando.setValue(false);
+                
                 if (response.isSuccessful()) {
                     mPropietario.setValue(response.body());
                     mMensaje.setValue("Perfil actualizado correctamente");
+                    
                     mEditMode.setValue(false);
+                    mTextoBoton.setValue("Editar"); 
+                    mCamposHabilitados.setValue(false); 
                 } else {
                     mError.setValue("Error al actualizar el perfil");
                 }
@@ -105,6 +134,7 @@ public class PerfilViewModel extends AndroidViewModel {
 
             @Override
             public void onFailure(Call<Propietario> call, Throwable t) {
+                mCargando.setValue(false);
                 mError.setValue("Error de conexión al guardar");
             }
         });

@@ -52,14 +52,17 @@ public class AgregarInmuebleFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Registrar launcher para solicitar permisos
+        // registrar launcher para solicitar permisos
         requestPermissionLauncher = registerForActivityResult(
                 new ActivityResultContracts.RequestPermission(),
-                isGranted -> {
-                    if (isGranted) {
-                        tomarFoto();
-                    } else {
-                        SnackbarUtils.mostrarError(binding.getRoot(), "Permiso de cámara denegado");
+                new ActivityResultCallback<Boolean>() {
+                    @Override
+                    public void onActivityResult(Boolean isGranted) {
+                        if (isGranted) {
+                            tomarFoto();
+                        } else {
+                            SnackbarUtils.mostrarError(binding.getRoot(), "Permiso de cámara denegado");
+                        }
                     }
                 });
     }
@@ -71,18 +74,18 @@ public class AgregarInmuebleFragment extends Fragment {
         binding = FragmentAgregarInmuebleBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        // Inicializar launchers
+        // inicializar launchers
         abrirGaleria();
         abrirCamara();
 
-        // Configurar adapters para los dropdowns
+        // configurar adapters para los dropdowns
         ArrayAdapter<String> adapterTipo = new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, Inmueble.TIPOS);
         binding.actvTipo.setAdapter(adapterTipo);
 
         ArrayAdapter<String> adapterUso = new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, Inmueble.USOS);
         binding.actvUso.setAdapter(adapterUso);
 
-        // Observer para la imagen
+        // observer para la imagen
         agregarVm.getMImagenUri().observe(getViewLifecycleOwner(), new Observer<Uri>() {
             @Override
             public void onChanged(Uri uri) {
@@ -90,7 +93,7 @@ public class AgregarInmuebleFragment extends Fragment {
             }
         });
 
-        // Observer para errores
+        // observer para errores
         agregarVm.getMError().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(String error) {
@@ -98,19 +101,16 @@ public class AgregarInmuebleFragment extends Fragment {
             }
         });
 
-        // Observer para mensajes de éxito
+        // observer para mensajes de exito
         agregarVm.getMMensaje().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(String mensaje) {
-                if (mensaje != null && !mensaje.isEmpty()) {
-                    SnackbarUtils.mostrarExito(binding.getRoot(), mensaje, true);
-                    // Volver atrás
-                    Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_menu).popBackStack();
-                }
+                SnackbarUtils.mostrarExito(binding.getRoot(), mensaje, true);
+                Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_menu).popBackStack();
             }
         });
 
-        // Botón seleccionar imagen (galería)
+        // boton seleccionar imagen
         binding.btnSeleccionarImagen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -118,7 +118,7 @@ public class AgregarInmuebleFragment extends Fragment {
             }
         });
 
-        // Botón tomar foto (cámara)
+        // boton tomar foto
         binding.btnTomarFoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -126,7 +126,7 @@ public class AgregarInmuebleFragment extends Fragment {
             }
         });
 
-        // Botón guardar
+        // boton guardar
         binding.btnGuardar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -161,8 +161,11 @@ public class AgregarInmuebleFragment extends Fragment {
     private void abrirCamara() {
         camaraLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
-                result -> {
-                    agregarVm.recibirFotoDeCamara(result, tempPhotoUri);
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        agregarVm.recibirFotoDeCamara(result, tempPhotoUri);
+                    }
                 });
     }
 

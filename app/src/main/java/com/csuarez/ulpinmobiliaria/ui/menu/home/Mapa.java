@@ -39,15 +39,18 @@ public class Mapa implements OnMapReadyCallback {
                 .tilt(45)
                 .build();
         CameraUpdate cameraUpdate = CameraUpdateFactory.newCameraPosition(cam);
-        googleMap.setOnMapLoadedCallback(() -> {
-            Log.println(Log.INFO,"info","in");
-            googleMap.animateCamera(
-                    cameraUpdate,
-                    3000,
-                    null
-            );
-            if (marker != null) {
-                marker.showInfoWindow();
+        googleMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
+            @Override
+            public void onMapLoaded() {
+                Log.println(Log.INFO,"info","in");
+                googleMap.animateCamera(
+                        cameraUpdate,
+                        3000,
+                        null
+                );
+                if (marker != null) {
+                    marker.showInfoWindow();
+                }
             }
         });
     }

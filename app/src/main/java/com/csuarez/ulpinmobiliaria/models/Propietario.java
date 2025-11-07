@@ -28,4 +28,5 @@ public class Propietario  implements Serializable {
     public String getDni() { return dni; }
     public String getTelefono() { return telefono; }
     public String getEmail() { return email; }
+    public String getNombreCompleto() { return nombre + " " + apellido; }
 }

@@ -72,7 +72,7 @@ public class ContratoAdapter extends RecyclerView.Adapter<ContratoAdapter.Contra
         public void bind(Inmueble inmueble, OnContratoClickListener listener) {
             tvDireccion.setText(inmueble.getDireccion());
 
-            // Cargar imagen con Glide
+            // cargar imagen con glide
             if (inmueble.getImagenUrl() != null) {
                 Glide.with(itemView.getContext())
                         .load(inmueble.getImagenUrl())
@@ -81,15 +81,21 @@ public class ContratoAdapter extends RecyclerView.Adapter<ContratoAdapter.Contra
                         .into(ivInmueble);
             }
 
-            btnVerInquilino.setOnClickListener(v -> {
-                if (listener != null) {
-                    listener.onVerInquilinoClick(inmueble);
+            btnVerInquilino.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listener != null) {
+                        listener.onVerInquilinoClick(inmueble);
+                    }
                 }
             });
 
-            btnVerContrato.setOnClickListener(v -> {
-                if (listener != null) {
-                    listener.onVerContratoClick(inmueble);
+            btnVerContrato.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listener != null) {
+                        listener.onVerContratoClick(inmueble);
+                    }
                 }
             });
         }

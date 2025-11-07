@@ -44,21 +44,13 @@
         android:id="@+id/detalleInmuebleFragment"
         android:name="com.csuarez.ulpinmobiliaria.ui.menu.inmueble.DetalleInmuebleFragment"
         android:label="Detalle del Inmueble"
-        tools:layout="@layout/fragment_detalle_inmueble" >
-        <action
-            android:id="@+id/action_detalleInmuebleFragment_to_nav_inmuebles2"
-            app:destination="@id/nav_inmuebles" />
-    </fragment>
+        tools:layout="@layout/fragment_detalle_inmueble" />
 
     <fragment
         android:id="@+id/agregarInmuebleFragment"
         android:name="com.csuarez.ulpinmobiliaria.ui.menu.inmueble.AgregarInmuebleFragment"
         android:label="Agregar Inmueble"
-        tools:layout="@layout/fragment_agregar_inmueble" >
-        <action
-            android:id="@+id/action_agregarInmuebleFragment_to_nav_inmuebles2"
-            app:destination="@id/nav_inmuebles" />
-    </fragment>
+        tools:layout="@layout/fragment_agregar_inmueble" />
 
     <fragment
         android:id="@+id/nav_contratos"
@@ -77,22 +69,13 @@
         android:id="@+id/detalleInquilinoFragment"
         android:name="com.csuarez.ulpinmobiliaria.ui.menu.contrato.DetalleInquilinoFragment"
         android:label="Inquilino"
-        tools:layout="@layout/fragment_detalle_inquilino" >
-        <action
-            android:id="@+id/action_detalleInquilinoFragment_to_nav_contratos"
-            app:destination="@id/nav_contratos" />
-    </fragment>
+        tools:layout="@layout/fragment_detalle_inquilino" />
 
     <fragment
         android:id="@+id/detalleContratoFragment"
         android:name="com.csuarez.ulpinmobiliaria.ui.menu.contrato.DetalleContratoFragment"
         android:label="Contrato"
-        tools:layout="@layout/fragment_detalle_contrato" >
-        <action
-            android:id="@+id/action_detalleContratoFragment_to_nav_contratos"
-            app:destination="@id/nav_contratos" />
-    </fragment>
-
+        tools:layout="@layout/fragment_detalle_contrato" />
 
 
 </navigation>

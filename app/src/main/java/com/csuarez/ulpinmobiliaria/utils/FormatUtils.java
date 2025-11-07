@@ -24,7 +24,7 @@ public class FormatUtils {
             SimpleDateFormat formatoSalida = new SimpleDateFormat(FORMATO_FECHA_ARGENTINA, LOCALE_ARGENTINA);
             return formatoSalida.format(date);
         } catch (Exception e) {
-            return fecha; // si falla devolver la fecha original
+            return fecha;
         }
     }
 

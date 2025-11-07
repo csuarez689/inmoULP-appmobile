@@ -21,12 +21,14 @@ public class DetalleInmuebleViewModel extends AndroidViewModel {
     private MutableLiveData<Inmueble> mInmueble;
     private MutableLiveData<String> mError;
     private MutableLiveData<String> mMensaje;
+    private MutableLiveData<Boolean> mCargando;
 
     public DetalleInmuebleViewModel(@NonNull Application application) {
         super(application);
         mInmueble = new MutableLiveData<>();
         mError = new MutableLiveData<>();
         mMensaje = new MutableLiveData<>();
+        mCargando = new MutableLiveData<>();
     }
 
     public LiveData<Inmueble> getMInmueble() {
@@ -39,6 +41,10 @@ public class DetalleInmuebleViewModel extends AndroidViewModel {
 
     public LiveData<String> getMMensaje() {
         return mMensaje;
+    }
+
+    public LiveData<Boolean> getMCargando() {
+        return mCargando;
     }
 
     public void setInmueble(Inmueble inmueble) {
@@ -62,12 +68,16 @@ public class DetalleInmuebleViewModel extends AndroidViewModel {
         }
 
         inmueble.setDisponible(disponible);
+        mCargando.setValue(true);
+
         String token = ApiClient.getToken(getApplication());
 
         Call<Inmueble> llamada = ApiClient.getClient().actualizarInmueble("Bearer " + token, inmueble);
         llamada.enqueue(new Callback<Inmueble>() {
             @Override
             public void onResponse(Call<Inmueble> call, Response<Inmueble> response) {
+                mCargando.setValue(false);
+
                 if (response.isSuccessful() && response.body() != null) {
                     mInmueble.postValue(response.body());
                     mMensaje.setValue("Disponibilidad actualizada correctamente");
@@ -78,6 +88,7 @@ public class DetalleInmuebleViewModel extends AndroidViewModel {
 
             @Override
             public void onFailure(Call<Inmueble> call, Throwable t) {
+                mCargando.setValue(false);
                 mError.setValue("Error de servidor");
             }
         });

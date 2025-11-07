@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.csuarez.ulpinmobiliaria.R;
 import com.csuarez.ulpinmobiliaria.databinding.FragmentContratosBinding;
 import com.csuarez.ulpinmobiliaria.models.Inmueble;
+import com.csuarez.ulpinmobiliaria.ui.menu.MenuActivity;
 import com.csuarez.ulpinmobiliaria.ui.menu.contrato.ContratoAdapter;
 import com.csuarez.ulpinmobiliaria.utils.SnackbarUtils;
 
@@ -36,7 +37,22 @@ public class ContratosFragment extends Fragment {
         binding = FragmentContratosBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        // Configurar RecyclerView
+        // observer para el loader
+        contratosVm.getMCargando().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean cargando) {
+                MenuActivity activity = (MenuActivity) getActivity();
+                if (activity != null) {
+                    if (cargando) {
+                        activity.mostrarLoader();
+                    } else {
+                        activity.ocultarLoader();
+                    }
+                }
+            }
+        });
+
+        // configurar recyclerview
         binding.rvInquilinos.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new ContratoAdapter(new ArrayList<>(), new ContratoAdapter.OnContratoClickListener() {
             @Override
@@ -59,7 +75,7 @@ public class ContratosFragment extends Fragment {
         });
         binding.rvInquilinos.setAdapter(adapter);
 
-        // Observers
+        // observer para lista de inmuebles con contrato
         contratosVm.getMInmueblesConContrato().observe(getViewLifecycleOwner(), new Observer<List<Inmueble>>() {
             @Override
             public void onChanged(List<Inmueble> inmuebles) {
@@ -87,7 +103,7 @@ public class ContratosFragment extends Fragment {
             }
         });
 
-        // Cargar datos
+        // cargar datos
         contratosVm.cargarInmueblesConContrato();
 
         return root;

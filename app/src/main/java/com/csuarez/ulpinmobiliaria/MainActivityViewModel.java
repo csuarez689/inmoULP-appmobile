@@ -20,6 +20,7 @@ public class MainActivityViewModel extends AndroidViewModel {
     private MutableLiveData<Boolean> mAgitar = new MutableLiveData<>();
     private MutableLiveData<Boolean> mLoggedIn = new MutableLiveData<>();
     private MutableLiveData<String> mMensaje = new MutableLiveData<>();
+    private MutableLiveData<Boolean> mCargando = new MutableLiveData<>();
 
     private  long lastShakeTime=0;
 
@@ -43,6 +44,10 @@ public class MainActivityViewModel extends AndroidViewModel {
     public LiveData<String> getMMensaje() {
         return mMensaje;
     }
+    
+    public LiveData<Boolean> getMCargando() {
+        return mCargando;
+    }
 
     public void login(Editable usuario, Editable clave) {
 
@@ -63,11 +68,15 @@ public class MainActivityViewModel extends AndroidViewModel {
             return;
         }
 
+        mCargando.setValue(true);
+        
         ApiClient.ApiService api = ApiClient.getClient();
         Call<String> llamada = api.login(email, pass);
         llamada.enqueue(new Callback<String>() {
             @Override
             public void onResponse(@NonNull Call<String> call, @NonNull Response<String> response) {
+                mCargando.setValue(false);
+                
                 if (response.isSuccessful() && response.body() != null) {
                     String token = response.body();
                     ApiClient.saveToken(getApplication(),token);
@@ -80,6 +89,7 @@ public class MainActivityViewModel extends AndroidViewModel {
 
             @Override
             public void onFailure(@NonNull Call<String> call, @NonNull Throwable t) {
+                mCargando.setValue(false);
                 mError.postValue("Error Servidor");
             }
         });
@@ -109,11 +119,15 @@ public class MainActivityViewModel extends AndroidViewModel {
             return;
         }
 
+        mCargando.setValue(true);
+        
         ApiClient.ApiService api = ApiClient.getClient();
         Call<String> llamada = api.resetPassword(email);
         llamada.enqueue(new Callback<String>() {
             @Override
             public void onResponse(@NonNull Call<String> call, @NonNull Response<String> response) {
+                mCargando.setValue(false);
+                
                 if (response.isSuccessful()) {
                     mMensaje.postValue("Se enviaron las instrucciones a su email");
                 } else {
@@ -123,6 +137,7 @@ public class MainActivityViewModel extends AndroidViewModel {
 
             @Override
             public void onFailure(@NonNull Call<String> call, @NonNull Throwable t) {
+                mCargando.setValue(false);
                 mError.postValue("Error de conexión");
             }
         });

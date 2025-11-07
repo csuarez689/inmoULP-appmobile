@@ -33,13 +33,14 @@ public class AgregarInmuebleViewModel extends AndroidViewModel {
     private MutableLiveData<String> mError = new MutableLiveData<>();
     private MutableLiveData<String> mMensaje = new MutableLiveData<>();
     private MutableLiveData<Uri> mImagenUri = new MutableLiveData<>();
+    private MutableLiveData<Boolean> mCargando = new MutableLiveData<>();
 
-    // Regex para validaciones
-    private static final String REGEX_LATITUD = "^-?([0-8]?[0-9]|90)(\\.[0-9]{1,10})?$"; // -90 a 90
-    private static final String REGEX_LONGITUD = "^-?(1[0-7][0-9]|[0-9]?[0-9]|180)(\\.[0-9]{1,10})?$"; // -180 a 180
-    private static final String REGEX_PRECIO = "^[0-9]+(\\.[0-9]{1,2})?$"; // Números positivos con hasta 2 decimales
-    private static final String REGEX_ENTERO_POSITIVO = "^[1-9][0-9]*$"; // Enteros positivos (no cero)
-    private static final String REGEX_DIRECCION = "^[A-Za-z0-9ÁÉÍÓÚáéíóúÑñ\\s.,#°-]{5,100}$"; // Dirección válida
+    // regex para validaciones
+    private static final String REGEX_LATITUD = "^-?([0-8]?[0-9]|90)(\\.[0-9]{1,10})?$"; 
+    private static final String REGEX_LONGITUD = "^-?(1[0-7][0-9]|[0-9]?[0-9]|180)(\\.[0-9]{1,10})?$"; 
+    private static final String REGEX_PRECIO = "^[0-9]+(\\.[0-9]{1,2})?$"; 
+    private static final String REGEX_ENTERO_POSITIVO = "^[1-9][0-9]*$"; 
+    private static final String REGEX_DIRECCION = "^[A-Za-z0-9ÁÉÍÓÚáéíóúÑñ\\s.,#°-]{5,100}$"; 
 
     public AgregarInmuebleViewModel(@NonNull Application application) {
         super(application);
@@ -55,6 +56,10 @@ public class AgregarInmuebleViewModel extends AndroidViewModel {
 
     public LiveData<Uri> getMImagenUri() {
         return mImagenUri;
+    }
+
+    public LiveData<Boolean> getMCargando() {
+        return mCargando;
     }
 
     public void setImagenUri(Uri uri) {
@@ -111,6 +116,8 @@ public class AgregarInmuebleViewModel extends AndroidViewModel {
         MultipartBody.Part imagenPart = MultipartBody.Part.createFormData("imagen", "imagen.jpg", requestFile);
 
         // Llamada a la API
+        mCargando.setValue(true);
+
         String token = ApiClient.getToken(getApplication());
         Call<Inmueble> llamada = ApiClient.getClient().cargarInmueble(
                 "Bearer " + token,
@@ -121,6 +128,8 @@ public class AgregarInmuebleViewModel extends AndroidViewModel {
         llamada.enqueue(new Callback<Inmueble>() {
             @Override
             public void onResponse(Call<Inmueble> call, Response<Inmueble> response) {
+                mCargando.setValue(false);
+
                 if (response.isSuccessful() && response.body() != null) {
                     mMensaje.setValue("Inmueble creado correctamente");
                 } else {
@@ -130,6 +139,7 @@ public class AgregarInmuebleViewModel extends AndroidViewModel {
 
             @Override
             public void onFailure(Call<Inmueble> call, Throwable t) {
+                mCargando.setValue(false);
                 mError.setValue("Error de servidor");
             }
         });

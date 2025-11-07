@@ -33,7 +33,7 @@ public class PagoAdapter extends RecyclerView.Adapter<PagoAdapter.PagoViewHolder
     @Override
     public void onBindViewHolder(@NonNull PagoViewHolder holder, int position) {
         Pago pago = pagos.get(position);
-        // Como la lista está invertida, contar desde el total hacia atrás
+        // como la lista esta invertida contar desde el total hacia atras
         int numeroPago = pagos.size() - position;
         holder.bind(pago, numeroPago);
     }

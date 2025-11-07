@@ -32,20 +32,34 @@ public class DetalleInmuebleFragment extends Fragment {
         binding = FragmentDetalleInmuebleBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        // Cargar inmueble desde argumentos
         detalleVm.cargarInmuebleDesdeArgumentos(getArguments());
 
-        // Observer para el inmueble
+        // observer para el inmueble
         detalleVm.getMInmueble().observe(getViewLifecycleOwner(), new Observer<Inmueble>() {
             @Override
             public void onChanged(Inmueble inmueble) {
-                if (inmueble != null) {
-                    mostrarDatosInmueble(inmueble);
+                binding.tvDireccionDetalle.setText(inmueble.getDireccion());
+                binding.tvTipoDetalle.setText(inmueble.getTipo());
+                binding.tvUsoDetalle.setText(inmueble.getUso());
+                binding.tvAmbientesDetalle.setText(String.valueOf(inmueble.getAmbientes()));
+                binding.tvSuperficieDetalle.setText(inmueble.getSuperficie() + " m\u00b2");
+                binding.tvPrecioDetalle.setText(inmueble.getPrecioFormateado());
+                binding.switchDisponible.setChecked(inmueble.getDisponible() != null && inmueble.getDisponible());
+
+                String imageUrl = inmueble.getImagenUrl();
+                if (imageUrl != null) {
+                    Glide.with(DetalleInmuebleFragment.this)
+                            .load(imageUrl)
+                            .placeholder(R.drawable.ic_launcher_background)
+                            .error(R.drawable.ic_launcher_background)
+                            .into(binding.ivInmuebleDetalle);
+                } else {
+                    binding.ivInmuebleDetalle.setImageResource(R.drawable.ic_launcher_background);
                 }
             }
         });
 
-        // Observer para errores
+        // observer para errores
         detalleVm.getMError().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(String error) {
@@ -53,7 +67,7 @@ public class DetalleInmuebleFragment extends Fragment {
             }
         });
 
-        // Observer para mensajes
+        // observer para mensajes
         detalleVm.getMMensaje().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(String mensaje) {
@@ -61,7 +75,7 @@ public class DetalleInmuebleFragment extends Fragment {
             }
         });
 
-        // Listener para el switch de disponibilidad
+        // listener para el switch de disponibilidad
         binding.switchDisponible.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -72,28 +86,6 @@ public class DetalleInmuebleFragment extends Fragment {
         });
 
         return root;
-    }
-
-    private void mostrarDatosInmueble(Inmueble inmueble) {
-        binding.tvDireccionDetalle.setText(inmueble.getDireccion());
-        binding.tvTipoDetalle.setText(inmueble.getTipo());
-        binding.tvUsoDetalle.setText(inmueble.getUso());
-        binding.tvAmbientesDetalle.setText(String.valueOf(inmueble.getAmbientes()));
-        binding.tvSuperficieDetalle.setText(inmueble.getSuperficie() + " m\u00b2");
-        binding.tvPrecioDetalle.setText(inmueble.getPrecioFormateado());
-        binding.switchDisponible.setChecked(inmueble.getDisponible() != null && inmueble.getDisponible());
-
-        // Cargar imagen con Glide
-        String imageUrl = inmueble.getImagenUrl();
-        if (imageUrl != null) {
-            Glide.with(this)
-                    .load(imageUrl)
-                    .placeholder(R.drawable.ic_launcher_background)
-                    .error(R.drawable.ic_launcher_background)
-                    .into(binding.ivInmuebleDetalle);
-        } else {
-            binding.ivInmuebleDetalle.setImageResource(R.drawable.ic_launcher_background);
-        }
     }
 
     @Override

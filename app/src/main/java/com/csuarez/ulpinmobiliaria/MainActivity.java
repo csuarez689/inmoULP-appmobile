@@ -57,7 +57,19 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         }
 
 
-        //observer agitar
+        // observer para el loader
+        mainVm.getMCargando().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean cargando) {
+                if (cargando) {
+                    binding.progressBar.setVisibility(View.VISIBLE);
+                } else {
+                    binding.progressBar.setVisibility(View.GONE);
+                }
+            }
+        });
+        
+        // observer agitar
         mainVm.getMAgitar().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean agitado) {
@@ -67,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             }
         });
 
-        //observer login
+        // observer login
         binding.btnLogin.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -77,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 }
         });
 
-        //observer error
+        // observer error
         mainVm.getMError().observe(this, new Observer<String>() {
             @Override
             public void onChanged (String error){
@@ -85,7 +97,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             }
         });
 
-        //observer mensaje
+        // observer mensaje
         mainVm.getMMensaje().observe(this, new Observer<String>() {
             @Override
             public void onChanged(String mensaje) {
@@ -187,7 +199,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                         if (!concedido) {
                             todosOtorgados = false;
 
-                            // si el usuario marco "no volver a preguntar"
+                            // si el usuario marco no volver a preguntar
                             if (!ActivityCompat.shouldShowRequestPermissionRationale(this, permiso)) {
                                 algunoNoPreguntar = true;
                             }
@@ -207,7 +219,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                         intent.setData(uri);
                         startActivity(intent);
 
-                        finish(); //cerrar app luego del aviso
+                        finish(); // cerrar app luego del aviso
                     } else {
                         Toast.makeText(this,
                                 "Debe otorgar los permisos para continuar.",

@@ -50,21 +50,21 @@ public class ApiClient {
             return mockService;
         }
         
-        // modo normal: usar api real
+        // modo normal usar api real
         if (retrofit == null) {
 
-        //interceptor
+        // interceptor
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(interceptor)
                 .build();
-        //gson
+        // gson
         Gson gson=new GsonBuilder()
                 .setStrictness(Strictness.LENIENT)
                 .setDateFormat("yyyy-MM-dd'T'HH:mm:ss")
                 .create();
-        //retrofit
+        // retrofit
         retrofit=new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create(gson))
@@ -135,8 +135,8 @@ public class ApiClient {
     }
 
        /**
-     * Implementación MOCK de ApiService para testing cuando la API está caída
-     * Devuelve datos de prueba simulando respuestas reales
+     * implementacion mock de apiservice para testing cuando la api esta caida
+     * devuelve datos de prueba simulando respuestas reales
      */
     private static class MockApiService implements ApiService {
 
@@ -148,7 +148,7 @@ public class ApiClient {
         @Override
         public Call<Propietario> getPropietario(String token) {
             Propietario propietario = new Propietario(
-                    1, "Juan", "Pérez", "12345678", "2664123456", "juan.perez@mail.com"
+                    1, "juan", "perez", "12345678", "2664123456", "juan.perez@mail.com"
             );
             return new MockCall<>(propietario);
         }
@@ -165,21 +165,21 @@ public class ApiClient {
 
         @Override
         public Call<String> resetPassword(String email) {
-            return new MockCall<>("Email enviado correctamente");
+            return new MockCall<>("email enviado correctamente");
         }
 
         @Override
         public Call<java.util.List<Inmueble>> getInmuebles(String token) {
             java.util.List<Inmueble> inmuebles = new java.util.ArrayList<>();
-            Propietario duenio = new Propietario(1, "Juan", "Pérez", "12345678", "2664123456", "juan.perez@mail.com");
+            Propietario duenio = new Propietario(1, "juan", "perez", "12345678", "2664123456", "juan.perez@mail.com");
             
-            inmuebles.add(new Inmueble(1, "Av. Libertador 1234", "Residencial", "Casa", 3, 2, -33.3, -66.3, 250000.0,
+            inmuebles.add(new Inmueble(1, "av libertador 1234", "residencial", "casa", 3, 2, -33.3, -66.3, 250000.0,
                     "https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=400", true, 1, duenio, false));
             
-            inmuebles.add(new Inmueble(2, "Colon 323", "Residencial", "Departamento", 2, 1, -33.3, -66.3, 180000.0,
+            inmuebles.add(new Inmueble(2, "colon 323", "residencial", "departamento", 2, 1, -33.3, -66.3, 180000.0,
                     "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=400", false, 1, duenio, true));
             
-            inmuebles.add(new Inmueble(3, "San Martin 567", "Comercial", "Local", 0, 1, -33.3, -66.3, 320000.0,
+            inmuebles.add(new Inmueble(3, "san martin 567", "comercial", "local", 0, 1, -33.3, -66.3, 320000.0,
                     "https://images.unsplash.com/photo-1497366216548-37526070297c?w=400", false, 1, duenio, true));
             
             return new MockCall<>(inmuebles);
@@ -187,8 +187,8 @@ public class ApiClient {
 
         @Override
         public Call<Inmueble> cargarInmueble(String token, MultipartBody.Part imagen, RequestBody inmueble) {
-            Propietario duenio = new Propietario(1, "Juan", "Pérez", "12345678", "2664123456", "juan.perez@mail.com");
-            Inmueble nuevoInmueble = new Inmueble(999, "Nuevo Inmueble", "Residencial", "Casa", 2, 1, -33.3, -66.3, 200000.0,
+            Propietario duenio = new Propietario(1, "juan", "perez", "12345678", "2664123456", "juan.perez@mail.com");
+            Inmueble nuevoInmueble = new Inmueble(999, "nuevo inmueble", "residencial", "casa", 2, 1, -33.3, -66.3, 200000.0,
                     "https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=400", true, 1, duenio, false);
             return new MockCall<>(nuevoInmueble);
         }
@@ -201,12 +201,12 @@ public class ApiClient {
         @Override
         public Call<java.util.List<Inmueble>> getInmueblesConContratoVigente(String token) {
             java.util.List<Inmueble> inmuebles = new java.util.ArrayList<>();
-            Propietario duenio = new Propietario(1, "Juan", "Pérez", "12345678", "2664123456", "juan.perez@mail.com");
+            Propietario duenio = new Propietario(1, "juan", "perez", "12345678", "2664123456", "juan.perez@mail.com");
             
-            inmuebles.add(new Inmueble(2, "Colon 323", "Residencial", "Departamento", 2, 1, -33.3, -66.3, 180000.0,
+            inmuebles.add(new Inmueble(2, "colon 323", "residencial", "departamento", 2, 1, -33.3, -66.3, 180000.0,
                     "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=400", false, 1, duenio, true));
             
-            inmuebles.add(new Inmueble(3, "San Martin 567", "Comercial", "Local", 0, 1, -33.3, -66.3, 320000.0,
+            inmuebles.add(new Inmueble(3, "san martin 567", "comercial", "local", 0, 1, -33.3, -66.3, 320000.0,
                     "https://images.unsplash.com/photo-1497366216548-37526070297c?w=400", false, 1, duenio, true));
             
             return new MockCall<>(inmuebles);
@@ -214,13 +214,13 @@ public class ApiClient {
 
         @Override
         public Call<Contrato> getContratoPorInmueble(String token, int idInmueble) {
-            Propietario duenio = new Propietario(1, "Juan", "Pérez", "12345678", "2664123456", "juan.perez@mail.com");
+            Propietario duenio = new Propietario(1, "juan", "perez", "12345678", "2664123456", "juan.perez@mail.com");
             
-            Inmueble inmueble = new Inmueble(idInmueble, "Colon 323", "Residencial", "Departamento", 2, 1, -33.3, -66.3, 180000.0,
+            Inmueble inmueble = new Inmueble(idInmueble, "colon 323", "residencial", "departamento", 2, 1, -33.3, -66.3, 180000.0,
                     "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=400", false, 1, duenio, true);
             
-            Inquilino inquilino = new Inquilino(1, "Mario", "Luna", "25340691", "2664253411",
-                    "mario.luna@mail.com", "Lucero Roberto", "2664851422");
+            Inquilino inquilino = new Inquilino(1, "mario", "luna", "25340691", "2664253411",
+                    "mario.luna@mail.com", "lucero roberto", "2664851422");
             
             Contrato contrato = new Contrato(1, idInmueble, 1, "2024-01-01", "2025-12-31", 85000.0,
                     true, inquilino, inmueble);
@@ -232,19 +232,19 @@ public class ApiClient {
         public Call<java.util.List<Pago>> getPagosPorContrato(String token, int idContrato) {
             java.util.List<Pago> pagos = new java.util.ArrayList<>();
             
-            pagos.add(new Pago(1, idContrato, "2024-01-05", "Pago mes de Enero", 85000.0, true, null));
-            pagos.add(new Pago(2, idContrato, "2024-02-05", "Pago mes de Febrero", 85000.0, true, null));
-            pagos.add(new Pago(3, idContrato, "2024-03-05", "Pago mes de Marzo", 85000.0, true, null));
-            pagos.add(new Pago(4, idContrato, "2024-04-05", "Pago mes de Abril", 85000.0, true, null));
-            pagos.add(new Pago(5, idContrato, "2024-05-05", "Pago mes de Mayo", 85000.0, false, null));
-            pagos.add(new Pago(6, idContrato, "2024-06-05", "Pago mes de Junio", 85000.0, false, null));
+            pagos.add(new Pago(1, idContrato, "2024-01-05", "pago mes de enero", 85000.0, true, null));
+            pagos.add(new Pago(2, idContrato, "2024-02-05", "pago mes de febrero", 85000.0, true, null));
+            pagos.add(new Pago(3, idContrato, "2024-03-05", "pago mes de marzo", 85000.0, true, null));
+            pagos.add(new Pago(4, idContrato, "2024-04-05", "pago mes de abril", 85000.0, true, null));
+            pagos.add(new Pago(5, idContrato, "2024-05-05", "pago mes de mayo", 85000.0, false, null));
+            pagos.add(new Pago(6, idContrato, "2024-06-05", "pago mes de junio", 85000.0, false, null));
             
             return new MockCall<>(pagos);
         }
     }
 
     /**
-     * Implementación simple de Call<T> para devolver respuestas mock
+     * implementacion simple de call para devolver respuestas mock
      */
     private static class MockCall<T> implements Call<T> {
         private T response;
@@ -260,7 +260,13 @@ public class ApiClient {
 
         @Override
         public void enqueue(retrofit2.Callback<T> callback) {
-            callback.onResponse(this, retrofit2.Response.success(response));
+            // simular delay de red para ver el loader
+            new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    callback.onResponse(MockCall.this, retrofit2.Response.success(response));
+                }
+            }, 1500);
         }
 
         @Override

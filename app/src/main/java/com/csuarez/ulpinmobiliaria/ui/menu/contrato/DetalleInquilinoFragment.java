@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.csuarez.ulpinmobiliaria.databinding.FragmentDetalleInquilinoBinding;
 import com.csuarez.ulpinmobiliaria.models.Inmueble;
 import com.csuarez.ulpinmobiliaria.models.Inquilino;
+import com.csuarez.ulpinmobiliaria.ui.menu.MenuActivity;
 import com.csuarez.ulpinmobiliaria.utils.SnackbarUtils;
 
 public class DetalleInquilinoFragment extends Fragment {
@@ -30,45 +31,50 @@ public class DetalleInquilinoFragment extends Fragment {
         binding = FragmentDetalleInquilinoBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        // Obtener inmueble del bundle
-        if (getArguments() != null) {
-            inmueble = (Inmueble) getArguments().getSerializable("inmueble");
-            if (inmueble != null) {
-                detalleVm.cargarInquilino(inmueble.getIdInmueble());
-            }
-        }
-
-        // Observer para el inquilino
-        detalleVm.getMInquilino().observe(getViewLifecycleOwner(), new Observer<Inquilino>() {
+        // observer para el loader
+        detalleVm.getMCargando().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
-            public void onChanged(Inquilino inquilino) {
-                if (inquilino != null) {
-                    mostrarDatosInquilino(inquilino);
+            public void onChanged(Boolean cargando) {
+                MenuActivity activity = (MenuActivity) getActivity();
+                if (activity != null) {
+                    if (cargando) {
+                        activity.mostrarLoader();
+                    } else {
+                        activity.ocultarLoader();
+                    }
                 }
             }
         });
 
-        // Observer para errores
+        // obtener inmueble del bundle
+        if (getArguments() != null) {
+            inmueble = (Inmueble) getArguments().getSerializable("inmueble");
+            detalleVm.cargarInquilino(inmueble.getIdInmueble());
+        }
+
+        // observer para el inquilino
+        detalleVm.getMInquilino().observe(getViewLifecycleOwner(), new Observer<Inquilino>() {
+            @Override
+            public void onChanged(Inquilino inquilino) {
+                binding.tvNombreInquilino.setText(inquilino.getNombre());
+                binding.tvApellidoInquilino.setText(inquilino.getApellido());
+                binding.tvDniInquilino.setText(inquilino.getDni());
+                binding.tvEmailInquilino.setText(inquilino.getEmail());
+                binding.tvTelefonoInquilino.setText(inquilino.getTelefono());
+                binding.tvGaranteInquilino.setText(inquilino.getGarante());
+                binding.tvTelefonoGaranteInquilino.setText(inquilino.getTelefonoGarante());
+            }
+        });
+
+        // observer para errores
         detalleVm.getMError().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(String error) {
-                if (error != null && !error.isEmpty()) {
-                    SnackbarUtils.mostrarError(binding.getRoot(), error);
-                }
+                SnackbarUtils.mostrarError(binding.getRoot(), error);
             }
         });
 
         return root;
-    }
-
-    private void mostrarDatosInquilino(Inquilino inquilino) {
-        binding.tvNombreInquilino.setText(inquilino.getNombre());
-        binding.tvApellidoInquilino.setText(inquilino.getApellido());
-        binding.tvDniInquilino.setText(inquilino.getDni());
-        binding.tvEmailInquilino.setText(inquilino.getEmail());
-        binding.tvTelefonoInquilino.setText(inquilino.getTelefono());
-        binding.tvGaranteInquilino.setText(inquilino.getGarante());
-        binding.tvTelefonoGaranteInquilino.setText(inquilino.getTelefonoGarante());
     }
 
     @Override

@@ -46,7 +46,7 @@ public class InmueblesAdapter extends RecyclerView.Adapter<InmueblesAdapter.Inmu
         holder.tvDetalles.setText(inmueble.getAmbientes() + " amb. - " + inmueble.getSuperficie() + " m²");
         holder.tvPrecio.setText(inmueble.getPrecioFormateado());
 
-        // Cargar imagen con Glide
+        // cargar imagen con glide
         String imageUrl = inmueble.getImagenUrl();
         if (imageUrl != null) {
             Glide.with(context)
@@ -58,7 +58,7 @@ public class InmueblesAdapter extends RecyclerView.Adapter<InmueblesAdapter.Inmu
             holder.ivInmueble.setImageResource(R.drawable.ic_launcher_background);
         }
 
-        // Click en el item completo
+        // click en el item completo
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

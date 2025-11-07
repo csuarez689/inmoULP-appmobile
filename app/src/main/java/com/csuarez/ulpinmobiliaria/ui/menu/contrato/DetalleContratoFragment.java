@@ -16,6 +16,7 @@ import com.csuarez.ulpinmobiliaria.databinding.FragmentDetalleContratoBinding;
 import com.csuarez.ulpinmobiliaria.models.Contrato;
 import com.csuarez.ulpinmobiliaria.models.Inmueble;
 import com.csuarez.ulpinmobiliaria.models.Pago;
+import com.csuarez.ulpinmobiliaria.ui.menu.MenuActivity;
 import com.csuarez.ulpinmobiliaria.utils.FormatUtils;
 import com.csuarez.ulpinmobiliaria.utils.SnackbarUtils;
 import com.google.android.material.snackbar.Snackbar;
@@ -39,40 +40,59 @@ public class DetalleContratoFragment extends Fragment {
         binding = FragmentDetalleContratoBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        // Configurar RecyclerView de pagos
+        // observer para el loader
+        detalleVm.getMCargando().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean cargando) {
+                MenuActivity activity = (MenuActivity) getActivity();
+                if (activity != null) {
+                    if (cargando) {
+                        activity.mostrarLoader();
+                    } else {
+                        activity.ocultarLoader();
+                    }
+                }
+            }
+        });
+
+        // configurar recyclerview de pagos
         binding.rvPagos.setLayoutManager(new LinearLayoutManager(getContext()));
         pagoAdapter = new PagoAdapter(new ArrayList<>());
         binding.rvPagos.setAdapter(pagoAdapter);
 
-        // Obtener inmueble del bundle
+        // obtener inmueble del bundle
         if (getArguments() != null) {
             inmueble = (Inmueble) getArguments().getSerializable("inmueble");
-            if (inmueble != null) {
-                detalleVm.cargarContrato(inmueble.getIdInmueble());
-            }
+            detalleVm.cargarContrato(inmueble.getIdInmueble());
         }
 
-        // Observer para el contrato
+        // observer para el contrato
         detalleVm.getMContrato().observe(getViewLifecycleOwner(), new Observer<Contrato>() {
             @Override
             public void onChanged(Contrato contrato) {
-                if (contrato != null) {
-                    mostrarDatosContrato(contrato);
+                if (contrato.getInquilino() != null) {
+                    binding.tvInquilino.setText(contrato.getInquilino().getNombreCompleto());
                 }
+                
+                if (contrato.getInmueble() != null) {
+                    binding.tvInmueble.setText(contrato.getInmueble().getDireccion());
+                }
+                
+                binding.tvFechaInicio.setText(FormatUtils.formatearFecha(contrato.getFechaInicio()));
+                binding.tvFechaFin.setText(FormatUtils.formatearFecha(contrato.getFechaFinalizacion()));
+                binding.tvMontoAlquiler.setText(FormatUtils.formatearMonto(contrato.getMontoAlquiler()));
             }
         });
 
-        // Observer para los pagos
+        // observer para los pagos
         detalleVm.getMPagos().observe(getViewLifecycleOwner(), new Observer<List<Pago>>() {
             @Override
             public void onChanged(List<Pago> pagos) {
-                if (pagos != null) {
-                    pagoAdapter.actualizarLista(pagos);
-                }
+                pagoAdapter.actualizarLista(pagos);
             }
         });
 
-        // Observer para lista vacía
+        // observer para lista vacia
         detalleVm.getMPagosVacio().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean vacio) {
@@ -86,7 +106,7 @@ public class DetalleContratoFragment extends Fragment {
             }
         });
 
-        // Observer para errores
+        // observer para errores
         detalleVm.getMError().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(String error) {
@@ -95,26 +115,6 @@ public class DetalleContratoFragment extends Fragment {
         });
 
         return root;
-    }
-
-    private void mostrarDatosContrato(Contrato contrato) {
-        // Inquilino
-        if (contrato.getInquilino() != null) {
-            String nombreInquilino = contrato.getInquilino().getNombre() + " " + contrato.getInquilino().getApellido();
-            binding.tvInquilino.setText(nombreInquilino);
-        }
-        
-        // Inmueble
-        if (contrato.getInmueble() != null) {
-            binding.tvInmueble.setText(contrato.getInmueble().getDireccion());
-        }
-        
-        // Formateos
-        binding.tvFechaInicio.setText(FormatUtils.formatearFecha(contrato.getFechaInicio()));
-        binding.tvFechaFin.setText(FormatUtils.formatearFecha(contrato.getFechaFinalizacion()));
-        
-        // Formatear
-        binding.tvMontoAlquiler.setText(FormatUtils.formatearMonto(contrato.getMontoAlquiler()));
     }
 
     @Override
