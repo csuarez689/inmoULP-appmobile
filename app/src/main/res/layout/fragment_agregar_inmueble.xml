@@ -162,6 +162,18 @@
                     android:inputType="numberDecimal|numberSigned" />
             </com.google.android.material.textfield.TextInputLayout>
 
+            <!-- Disponible -->
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/switchDisponible"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Disponible"
+                android:checked="false"
+                android:layout_marginTop="16dp"
+                app:layout_constraintTop_toBottomOf="@id/tilLatitud"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
             <!-- Imagen -->
             <ImageView
                 android:id="@+id/ivImagenPreview"
@@ -171,7 +183,7 @@
                 android:scaleType="centerCrop"
                 android:background="#E0E0E0"
                 android:contentDescription="Vista previa de imagen"
-                app:layout_constraintTop_toBottomOf="@id/tilLatitud"
+                app:layout_constraintTop_toBottomOf="@id/switchDisponible"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 

@@ -40,6 +40,8 @@
         android:layout_margin="16dp"
         android:contentDescription="Agregar Inmueble"
         android:src="@android:drawable/ic_input_add"
+        app:backgroundTint="@color/colorPrimary"
+        app:tint="@color/colorOnPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

@@ -99,6 +99,7 @@ public class PerfilFragment extends Fragment {
         binding.btnGuardar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SnackbarUtils.ocultarTeclado(v);
                 perfilVm.onBotonPrincipalClick(
                         binding.etNombre.getText().toString(),
                         binding.etApellido.getText().toString(),

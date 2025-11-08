@@ -83,10 +83,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         binding.btnLogin.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
+                SnackbarUtils.ocultarTeclado(v);
                 mainVm.login(binding.etUsuario.getText(), binding.etClave.getText());
-                Intent intent = new Intent(MainActivity.this, MenuActivity.class);
-                startActivity(intent);
-                }
+            }
         });
 
         // observer error

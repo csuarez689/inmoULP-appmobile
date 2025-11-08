@@ -30,6 +30,7 @@ import androidx.fragment.app.Fragment;
 import com.csuarez.ulpinmobiliaria.R;
 import com.csuarez.ulpinmobiliaria.databinding.FragmentAgregarInmuebleBinding;
 import com.csuarez.ulpinmobiliaria.models.Inmueble;
+import com.csuarez.ulpinmobiliaria.ui.menu.MenuActivity;
 import com.csuarez.ulpinmobiliaria.utils.SnackbarUtils;
 
 import java.io.File;
@@ -74,6 +75,12 @@ public class AgregarInmuebleFragment extends Fragment {
         binding = FragmentAgregarInmuebleBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
+        // ocultar loader global al entrar al fragment
+        MenuActivity activity = (MenuActivity) getActivity();
+        if (activity != null) {
+            activity.ocultarLoader();
+        }
+
         // inicializar launchers
         abrirGaleria();
         abrirCamara();
@@ -84,6 +91,21 @@ public class AgregarInmuebleFragment extends Fragment {
 
         ArrayAdapter<String> adapterUso = new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, Inmueble.USOS);
         binding.actvUso.setAdapter(adapterUso);
+
+        // observer para el loader
+        agregarVm.getMCargando().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean cargando) {
+                com.csuarez.ulpinmobiliaria.ui.menu.MenuActivity activity = (com.csuarez.ulpinmobiliaria.ui.menu.MenuActivity) getActivity();
+                if (activity != null) {
+                    if (cargando) {
+                        activity.mostrarLoader();
+                    } else {
+                        activity.ocultarLoader();
+                    }
+                }
+            }
+        });
 
         // observer para la imagen
         agregarVm.getMImagenUri().observe(getViewLifecycleOwner(), new Observer<Uri>() {
@@ -130,6 +152,7 @@ public class AgregarInmuebleFragment extends Fragment {
         binding.btnGuardar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SnackbarUtils.ocultarTeclado(v);
                 agregarVm.crearInmueble(
                         binding.etDireccion.getText().toString(),
                         binding.actvTipo.getText().toString(),
@@ -138,7 +161,8 @@ public class AgregarInmuebleFragment extends Fragment {
                         binding.etSuperficie.getText().toString(),
                         binding.etPrecio.getText().toString(),
                         binding.etLatitud.getText().toString(),
-                        binding.etLongitud.getText().toString()
+                        binding.etLongitud.getText().toString(),
+                        binding.switchDisponible.isChecked()
                 );
             }
         });

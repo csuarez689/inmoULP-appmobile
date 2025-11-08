@@ -81,7 +81,7 @@ public class AgregarInmuebleViewModel extends AndroidViewModel {
     }
 
     public void crearInmueble(String direccion, String tipo, String uso, String ambientes,
-                              String superficie, String precio, String latitud, String longitud) {
+                              String superficie, String precio, String latitud, String longitud, boolean disponible) {
 
         // Validaciones
         if (!validarCampos(direccion, tipo, uso, ambientes, superficie, precio, latitud, longitud)) {
@@ -98,6 +98,7 @@ public class AgregarInmuebleViewModel extends AndroidViewModel {
         nuevoInmueble.setValor(Double.parseDouble(precio));
         nuevoInmueble.setLatitud(Double.parseDouble(latitud));
         nuevoInmueble.setLongitud(Double.parseDouble(longitud));
+        nuevoInmueble.setDisponible(disponible);
 
         // Transformar imagen a bytes
         byte[] imagenBytes = transformarImagen();

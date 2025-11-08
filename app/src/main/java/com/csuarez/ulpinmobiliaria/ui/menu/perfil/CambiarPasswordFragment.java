@@ -70,12 +70,12 @@ public class CambiarPasswordFragment extends Fragment {
         binding.btnCambiarClave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SnackbarUtils.ocultarTeclado(v);
                 cambiarPasswordVm.actualizarPassword(
                         binding.etClaveActual.getText().toString(),
                         binding.etNuevaClave.getText().toString(),
                         binding.etConfirmarNuevaClave.getText().toString()
                 );
-
             }
         });
 
