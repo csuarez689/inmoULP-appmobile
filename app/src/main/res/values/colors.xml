@@ -4,6 +4,7 @@
     <color name="colorOnPrimary">#FFFFFF</color>
     <color name="colorSecondary">#3A8891</color>
     <color name="colorCancel">#B0BEC5</color>
+    <color name="colorProgressBar">#5C6BC0</color>
     
     <!-- Colores para Snackbars -->
     <color name="snackbarSuccess">#0E5E6F</color>

@@ -29,7 +29,7 @@
             android:layout_height="4dp"
             android:indeterminate="true"
             android:visibility="gone"
-            android:indeterminateTint="@color/colorPrimary" />
+            android:indeterminateTint="@color/colorProgressBar" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
