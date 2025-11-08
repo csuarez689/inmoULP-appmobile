@@ -34,7 +34,7 @@ import retrofit2.http.Part;
 public class ApiClient {
 
     // cambiar este flag para usar datos mock (true) o api real (false)
-    public static final boolean USE_MOCK_DATA = true;
+    public static final boolean USE_MOCK_DATA = false;
 
     public static final String BASE_URL="https://inmobiliariaulp-amb5hwfqaraweyga.canadacentral-01.azurewebsites.net/";
     private static Retrofit retrofit;
