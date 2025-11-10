@@ -71,8 +71,8 @@ public class MainActivityViewModel extends AndroidViewModel {
         mCargando.setValue(true);
         
         ApiClient.ApiService api = ApiClient.getClient();
-        Call<String> llamada = api.login(email, pass);
-        llamada.enqueue(new Callback<String>() {
+        Call<String> call = api.login(email, pass);
+        call.enqueue(new Callback<String>() {
             @Override
             public void onResponse(@NonNull Call<String> call, @NonNull Response<String> response) {
                 mCargando.setValue(false);
@@ -80,17 +80,17 @@ public class MainActivityViewModel extends AndroidViewModel {
                 if (response.isSuccessful() && response.body() != null) {
                     String token = response.body();
                     ApiClient.saveToken(getApplication(),token);
-                    mLoggedIn.postValue(true);
+                    mLoggedIn.setValue(true);
                 }
                 else {
-                        mError.postValue("Usuario o contraseña incorrecta");
+                        mError.setValue("Usuario o contraseña incorrecta");
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<String> call, @NonNull Throwable t) {
                 mCargando.setValue(false);
-                mError.postValue("Error Servidor");
+                mError.setValue("Error Servidor");
             }
         });
     }
@@ -122,23 +122,23 @@ public class MainActivityViewModel extends AndroidViewModel {
         mCargando.setValue(true);
         
         ApiClient.ApiService api = ApiClient.getClient();
-        Call<String> llamada = api.resetPassword(email);
-        llamada.enqueue(new Callback<String>() {
+        Call<String> call = api.resetPassword(email);
+        call.enqueue(new Callback<String>() {
             @Override
             public void onResponse(@NonNull Call<String> call, @NonNull Response<String> response) {
                 mCargando.setValue(false);
                 
                 if (response.isSuccessful()) {
-                    mMensaje.postValue("Se enviaron las instrucciones a su email");
+                    mMensaje.setValue("Se enviaron las instrucciones a su email");
                 } else {
-                    mError.postValue("Email no encontrado");
+                    mError.setValue("Email no encontrado");
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<String> call, @NonNull Throwable t) {
                 mCargando.setValue(false);
-                mError.postValue("Error de conexión");
+                mError.setValue("Error de conexión");
             }
         });
     }

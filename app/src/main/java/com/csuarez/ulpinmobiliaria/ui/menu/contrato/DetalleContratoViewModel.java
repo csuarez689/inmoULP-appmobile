@@ -53,9 +53,9 @@ public class DetalleContratoViewModel extends AndroidViewModel {
         mCargando.setValue(true);
 
         String token = ApiClient.getToken(getApplication());
-        Call<Contrato> llamada = ApiClient.getClient().getContratoPorInmueble("Bearer " + token, idInmueble);
+        Call<Contrato> call = ApiClient.getClient().getContratoPorInmueble("Bearer " + token, idInmueble);
 
-        llamada.enqueue(new Callback<Contrato>() {
+        call.enqueue(new Callback<Contrato>() {
             @Override
             public void onResponse(Call<Contrato> call, Response<Contrato> response) {
                 if (response.isSuccessful() && response.body() != null) {
@@ -79,9 +79,9 @@ public class DetalleContratoViewModel extends AndroidViewModel {
 
     private void cargarPagos(int idContrato) {
         String token = ApiClient.getToken(getApplication());
-        Call<List<Pago>> llamada = ApiClient.getClient().getPagosPorContrato("Bearer " + token, idContrato);
+        Call<List<Pago>> call = ApiClient.getClient().getPagosPorContrato("Bearer " + token, idContrato);
 
-        llamada.enqueue(new Callback<List<Pago>>() {
+        call.enqueue(new Callback<List<Pago>>() {
             @Override
             public void onResponse(Call<List<Pago>> call, Response<List<Pago>> response) {
                 mCargando.setValue(false);

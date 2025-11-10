@@ -116,17 +116,16 @@ public class AgregarInmuebleViewModel extends AndroidViewModel {
         RequestBody requestFile = RequestBody.create(MediaType.parse("image/jpeg"), imagenBytes);
         MultipartBody.Part imagenPart = MultipartBody.Part.createFormData("imagen", "imagen.jpg", requestFile);
 
-        // Llamada a la API
         mCargando.setValue(true);
 
         String token = ApiClient.getToken(getApplication());
-        Call<Inmueble> llamada = ApiClient.getClient().cargarInmueble(
+        Call<Inmueble> call = ApiClient.getClient().cargarInmueble(
                 "Bearer " + token,
                 imagenPart,
                 inmuebleBody
         );
 
-        llamada.enqueue(new Callback<Inmueble>() {
+        call.enqueue(new Callback<Inmueble>() {
             @Override
             public void onResponse(Call<Inmueble> call, Response<Inmueble> response) {
                 mCargando.setValue(false);

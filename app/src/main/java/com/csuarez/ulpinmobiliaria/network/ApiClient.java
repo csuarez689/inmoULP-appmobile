@@ -106,7 +106,7 @@ public class ApiClient {
         Call<Void> cambiarPassword(@Header("Authorization") String token, @Field("currentPassword") String passActual, @Field("newPassword") String passNueva);
 
         @FormUrlEncoded
-        @POST("api/Propietarios/resetPassword")
+        @POST("api/Propietarios/email")
         Call<String> resetPassword(@Field("email") String email);
 
         @GET("api/Inmuebles")

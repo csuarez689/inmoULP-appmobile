@@ -47,9 +47,9 @@ public class ContratosViewModel extends AndroidViewModel {
         mCargando.setValue(true);
 
         String token = ApiClient.getToken(getApplication());
-        Call<List<Inmueble>> llamada = ApiClient.getClient().getInmueblesConContratoVigente("Bearer " + token);
+        Call<List<Inmueble>> call = ApiClient.getClient().getInmueblesConContratoVigente("Bearer " + token);
 
-        llamada.enqueue(new Callback<List<Inmueble>>() {
+        call.enqueue(new Callback<List<Inmueble>>() {
             @Override
             public void onResponse(Call<List<Inmueble>> call, Response<List<Inmueble>> response) {
                 mCargando.setValue(false);

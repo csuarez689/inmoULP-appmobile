@@ -59,7 +59,7 @@ public class CambiarPasswordViewModel extends AndroidViewModel {
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
                 mCargando.setValue(false);
-                mError.postValue("Error de conexión con el servidor.");
+                mError.setValue("Error de conexión con el servidor.");
             }
         });
     }

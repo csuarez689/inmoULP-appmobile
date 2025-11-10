@@ -47,17 +47,17 @@ public class InmueblesViewModel extends AndroidViewModel {
         mCargando.setValue(true);
         
         String token = ApiClient.getToken(getApplication());
-        Call<List<Inmueble>> llamada = ApiClient.getClient().getInmuebles("Bearer " + token);
-        
-        llamada.enqueue(new Callback<List<Inmueble>>() {
+        Call<List<Inmueble>> call = ApiClient.getClient().getInmuebles("Bearer " + token);
+
+        call.enqueue(new Callback<List<Inmueble>>() {
             @Override
             public void onResponse(@NonNull Call<List<Inmueble>> call, @NonNull Response<List<Inmueble>> response) {
                 mCargando.setValue(false);
                 
                 if (response.isSuccessful() && response.body() != null) {
                     List<Inmueble> inmuebles = response.body();
-                    mLista.postValue(inmuebles);
-                    mListaVacia.postValue(inmuebles.isEmpty());
+                    mLista.setValue(inmuebles);
+                    mListaVacia.setValue(inmuebles.isEmpty());
                 } else {
                     mError.setValue("Error al cargar inmuebles");
                 }

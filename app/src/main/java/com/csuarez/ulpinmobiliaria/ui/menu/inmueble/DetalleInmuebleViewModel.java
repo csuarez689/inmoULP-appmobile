@@ -72,14 +72,14 @@ public class DetalleInmuebleViewModel extends AndroidViewModel {
 
         String token = ApiClient.getToken(getApplication());
 
-        Call<Inmueble> llamada = ApiClient.getClient().actualizarInmueble("Bearer " + token, inmueble);
-        llamada.enqueue(new Callback<Inmueble>() {
+        Call<Inmueble> call = ApiClient.getClient().actualizarInmueble("Bearer " + token, inmueble);
+        call.enqueue(new Callback<Inmueble>() {
             @Override
             public void onResponse(Call<Inmueble> call, Response<Inmueble> response) {
                 mCargando.setValue(false);
 
                 if (response.isSuccessful() && response.body() != null) {
-                    mInmueble.postValue(response.body());
+                    mInmueble.setValue(response.body());
                     mMensaje.setValue("Disponibilidad actualizada correctamente");
                 } else {
                     mError.setValue("Error al actualizar la disponibilidad");
